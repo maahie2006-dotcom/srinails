@@ -1,0 +1,1 @@
+mongodb+srv://maahie2006_db_user:7dkQYeQILEuhiG0d@srinailscluster.gnyyrjc.mongodb.net/
