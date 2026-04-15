@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 💅 SriNails — Full Stack MERN E-Commerce
 
 A luxury press-on nails e-commerce store built with MongoDB, Express, React, and Node.js.
@@ -266,3 +267,7 @@ npm run build
 
 ## 💅 Made with love for # 💅 SriNails
 
+=======
+# srinails
+press-on nails website
+>>>>>>> b2c6bbbe693bc05b0ec76c46a56f0bcfa5bcca6d
