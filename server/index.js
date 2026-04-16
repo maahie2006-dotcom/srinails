@@ -9,6 +9,7 @@ import reviewRoutes from './routes/reviews.js';
 import cartRoutes from './routes/cart.js';
 import wishlistRoutes from './routes/wishlist.js';
 import contactRoutes from "./routes/contactRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Routes
 app.use("/api", contactRoutes);
+app.use("/api/users", userRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);

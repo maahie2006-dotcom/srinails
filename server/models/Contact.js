@@ -5,6 +5,7 @@ const contactSchema = new mongoose.Schema({
   email: String,
   subject: String,
   message: String,
+  reply: String   // ✅ ADD THIS
 }, { timestamps: true });
 
 export default mongoose.model("Contact", contactSchema);

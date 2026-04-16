@@ -39,3 +39,108 @@
 .admin-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .admin-form-grid .full { grid-column: 1/-1; }
 @media (max-width: 900px) { .admin-stats { grid-template-columns: repeat(2, 1fr); } .admin-table-head, .admin-table-row { grid-template-columns: 1fr 1fr; } .admin-table-head span:nth-child(n+3), .admin-table-row span:nth-child(n+3) { display: none; } }
+.admin-container {
+  padding: 20px;
+}
+
+.admin-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.message-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.message-header h3 {
+  margin: 0;
+}
+
+.message-header span {
+  font-size: 12px;
+  color: gray;
+}
+
+.message-text {
+  margin: 10px 0;
+}
+
+.message-date {
+  font-size: 11px;
+  color: gray;
+}
+
+.reply-section {
+  margin-top: 10px;
+}
+
+.reply-input {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 8px;
+}
+
+.reply-btn {
+  background: black;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.reply-box {
+  background: #f5f5f5;
+  padding: 8px;
+  border-radius: 6px;
+}
+.table-container {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.admin-table th {
+  background: #f5f5f5;
+}
+
+.btn-admin {
+  background: green;
+  color: white;
+  padding: 5px 10px;
+  margin-right: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-delete {
+  background: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

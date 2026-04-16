@@ -17,6 +17,9 @@ export const Login = () => {
     setLoading(true);
     try {
       await login(form.email, form.password);
+
+// ✅ ADD THIS LINE
+localStorage.setItem("email", form.email);
       toast.success('Welcome back! 💅');
       navigate(from, { replace: true });
     } catch (err) {
@@ -69,6 +72,9 @@ export const Register = () => {
     setLoading(true);
     try {
       await register(form.name, form.email, form.password);
+
+// ✅ SAVE EMAIL
+localStorage.setItem("email", form.email);
       toast.success('Account created! Welcome to the family 💅');
       navigate('/account');
     } catch (err) {

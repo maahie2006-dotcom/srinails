@@ -58,30 +58,38 @@ const Navbar = () => {
         <div className="nav-inner container">
           {/* Left links */}
           <div className="nav-left">
-            {/* <NavLink to="/shop" className="nav-link" onMouseEnter={() => setDropdownOpen('shop')} onMouseLeave={() => setDropdownOpen(null)}> */}
-                <NavLink to="/shop" className="nav-link">
-              Shop
-              {/* {dropdownOpen === 'shop' && (
-                <div className="nav-dropdown" onMouseEnter={() => setDropdownOpen('shop')} onMouseLeave={() => setDropdownOpen(null)}>
-                  <div className="dropdown-grid">
-                    {categories.map(c => (
-                      <Link key={c.path} to={c.path} className="dropdown-item" onClick={() => setDropdownOpen(null)}>
-                        <span className="dropdown-label">{c.label}</span>
-                      </Link>
-                    ))}
-                    <Link to="/shop" className="dropdown-item dropdown-all" onClick={() => setDropdownOpen(null)}>
-                      <span className="dropdown-label">All Styles →</span>
-                    </Link>
-                  </div>
-                </div>
-              )} */}
-            </NavLink>
-            <NavLink to="/sizing-guide" className="nav-link">
-  Sizing Guide
-</NavLink>
-            <NavLink to="/how-to-apply" className="nav-link">How To Apply</NavLink>
-            <NavLink to="/about" className="nav-link">About</NavLink>
-          </div>
+
+ 
+  {/* /*add home */}
+  <NavLink to="/" className="nav-link">
+  Home
+  </NavLink>
+
+  {/* Shop */}
+  <NavLink to="/shop" className="nav-link">
+    Shop
+  </NavLink>
+
+  {/* Other links */}
+  <NavLink to="/sizing-guide" className="nav-link">
+    Sizing Guide
+  </NavLink>
+
+  <NavLink to="/how-to-apply" className="nav-link">
+    How To Apply
+  </NavLink>
+
+  <NavLink to="/about" className="nav-link">
+    About
+  </NavLink>
+
+
+  {/* ✅ ADD CONTACT */}
+  <NavLink to="/contact" className="nav-link">
+    Contact
+  </NavLink>
+
+</div>
 
           {/* Logo */}
           <Link to="/" className="nav-logo">
@@ -131,7 +139,25 @@ const Navbar = () => {
                     <Link to="/account" className="dropdown-item" onClick={() => setDropdownOpen(null)}>My Account</Link>
                     <Link to="/orders" className="dropdown-item" onClick={() => setDropdownOpen(null)}>My Orders</Link>
                     <Link to="/wishlist" className="dropdown-item" onClick={() => setDropdownOpen(null)}>Wishlist</Link>
-                    {user.role === 'admin' && <Link to="/admin" className="dropdown-item admin-link" onClick={() => setDropdownOpen(null)}>Admin Panel</Link>}
+                    {user.role === 'admin' && (
+  <>
+    <Link to="/admin/dashboard" className="dropdown-item admin-link">
+      Admin Dashboard
+    </Link>
+
+    <Link to="/admin/products" className="dropdown-item">
+      Products
+    </Link>
+
+    <Link to="/admin/orders" className="dropdown-item">
+      Orders
+    </Link>
+
+    <Link to="/admin/messages" className="dropdown-item">
+      Messages 💬
+    </Link>
+  </>
+)}
                     <button className="dropdown-item logout-btn" onClick={() => { logout(); setDropdownOpen(null); }}>Sign Out</button>
                   </div>
                 )}

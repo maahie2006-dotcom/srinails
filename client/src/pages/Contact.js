@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function Contact() {
@@ -15,6 +15,13 @@ function Contact() {
 
     try {
       await axios.post("http://localhost:5000/api/contact", data);
+
+// refresh messages
+const email = localStorage.getItem("email");
+if (email) {
+  const res = await axios.get(`/api/contact/my-messages/${email}`);
+  setMessages(res.data);
+}
       alert("Message sent successfully! 💅");
       e.target.reset();
     } catch (error) {
@@ -22,6 +29,22 @@ function Contact() {
       console.log(error);
     }
   };
+  const [messages, setMessages] = useState([]);
+  useEffect(() => {
+  const fetchMessages = async () => {
+    try {
+      const email = localStorage.getItem("email"); // user email
+      if (!email) return;
+
+      const res = await axios.get(`/api/contact/my-messages/${email}`);
+      setMessages(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchMessages();
+}, []);
 
   return (
     <div style={styles.container}>
@@ -56,6 +79,32 @@ function Contact() {
         {/* RIGHT SIDE FORM */}
         <div style={styles.right}>
           <form onSubmit={handleSubmit}>
+            <h2 style={{ marginTop: "30px" }}>Your Messages 💬</h2>
+
+{messages.length === 0 ? (
+  <p>No messages yet</p>
+) : (
+  messages.map((msg) => (
+    <div key={msg._id} style={{
+      marginBottom: "20px",
+      padding: "10px",
+      border: "1px solid #ccc",
+      borderRadius: "5px"
+    }}>
+      
+      <p><strong>You:</strong> {msg.message}</p>
+
+      {msg.reply ? (
+        <p style={{ color: "green" }}>
+          <strong>Admin:</strong> {msg.reply}
+        </p>
+      ) : (
+        <p style={{ color: "gray" }}>Waiting for reply...</p>
+      )}
+
+    </div>
+  ))
+)}
 
             <input
               type="text"

@@ -271,7 +271,7 @@ const Shop = () => {
       {/* Breadcrumb */}
       <div className="shop-breadcrumb">
         <div className="container breadcrumb-inner">
-          <Link to="/">Home</Link> <span>/</span>
+          
           <Link to="/shop">Shop</Link>
           {activeCategory !== "all" && (
             <>

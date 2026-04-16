@@ -1,5 +1,6 @@
 import React from 'react';
 import Dashboard from "./pages/admin/Dashboard";
+import Messages from "./pages/admin/Messages";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import FAQ from "./pages/FAQ";
@@ -45,9 +46,10 @@ function App() {
             <Navbar />
             <main>
               <Routes>
+                
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />
-                <Route path="/admin" element={<Dashboard />} />
+                
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/returns" element={<Returns />} />
                 <Route path="/sizing-guide" element={<SizingGuide />} />
@@ -69,6 +71,7 @@ function App() {
                 <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
                 <Route path="/admin/products" element={<AdminRoute><AdminProducts /></AdminRoute>} />
                 <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
+                <Route path="/admin/messages" element={<AdminRoute><Messages /></AdminRoute>} />
               </Routes>
             </main>
             <Footer />

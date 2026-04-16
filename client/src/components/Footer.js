@@ -23,7 +23,7 @@ const Footer = () => (
             delivered to your door.
           </p>
 
-          <div className="footer-social">
+          {/* <div className="footer-social">
             {[
               { icon: '📸', label: 'Instagram', url: 'https://instagram.com/nailnrutya' },
             ].map(s => (
@@ -38,7 +38,7 @@ const Footer = () => (
                 {s.icon}
               </a>
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* Help */}

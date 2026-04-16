@@ -39,9 +39,22 @@ const Checkout = () => {
   };
 
   const applyCoupon = () => {
+  console.log("Coupon Entered:", coupon);
+  console.log("Subtotal:", subtotal);
+
+  if (coupon.trim() === "") {
+    toast.error("Please enter coupon ❌");
+    return;
+  }
+
+  if (subtotal === 0) {
+    toast.error("Cart is empty ❌");
+    return;
+  }
+
   if (coupon.toUpperCase() === "SRI10") {
     setDiscount(0.10);
-    toast.success("Coupon Applied 🎉");
+    toast.success("10% Discount Applied 🎉");
   } else {
     setDiscount(0);
     toast.error("Invalid Coupon ❌");
@@ -255,9 +268,9 @@ const Checkout = () => {
             <div className="summary-row"><span>Subtotal</span><span>₹{subtotal.toFixed(2)}</span></div>
             <div className="summary-row"><span>Shipping</span><span>{shipping === 0 ? <span style={{ color: '#2ea76a', fontWeight: 700 }}>FREE</span> : `₹${shipping.toFixed(2)}`}</span></div>
             <div className="summary-row"><span>Tax (8%)</span><span>₹{tax.toFixed(2)}</span></div>
-            {discount > 0 && (
-  <div className="summary-row" style={{ color: "green" }}>
-    <span>Discount (10%)</span>
+           {discount > 0 && (
+  <div className="summary-row" style={{ color: "green", fontWeight: "bold" }}>
+    <span>🎉 Coupon Applied (10%)</span>
     <span>-₹{discountAmount.toFixed(2)}</span>
   </div>
 )}
