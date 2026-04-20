@@ -1,0 +1,239 @@
+/* --- SriNails Luxury Contact Page Styles --- */
+
+.contact-luxe-page {
+  background-color: #fdfaf9; /* Signature Cream Background */
+  padding: 100px 20px;
+  min-height: 100vh;
+}
+
+.luxe-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.contact-header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.contact-header h1 {
+  font-family: 'Playfair Display', serif; /* Or your theme's luxury font */
+  color: #4a2c2a; /* Signature Plum */
+  font-size: 2.8rem;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.contact-header p {
+  color: #8e7370;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+/* --- Sidebar: Info & History --- */
+
+.contact-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.info-block h3, 
+.history-block h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #4a2c2a;
+  border-bottom: 1px solid #f2e1e1;
+  padding-bottom: 10px;
+  margin-bottom: 25px;
+  font-weight: 700;
+}
+
+.contact-methods p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 18px 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-methods a {
+  color: #4a2c2a;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px solid transparent;
+  transition: 0.3s;
+}
+
+.contact-methods a:hover {
+  border-bottom: 1px solid #4a2c2a;
+}
+
+/* Previous Inquiries Cards */
+.message-scroll-area {
+  max-height: 450px;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+.history-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border: 1px solid #f2e1e1;
+}
+
+.history-user {
+  font-size: 0.9rem;
+  color: #8e7370;
+  margin-bottom: 8px;
+}
+
+.history-admin {
+  background: #fdfaf9; 
+  padding: 10px;
+  border-left: 3px solid #d4af37; /* Gold Luxury Accent */
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #4a2c2a;
+}
+
+.history-admin strong {
+  color: #d4af37;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.history-pending {
+  color: #bbb;
+  font-style: italic;
+  font-size: 0.75rem;
+}
+
+/* --- Main Form Card --- */
+
+.luxe-contact-form {
+  background: white;
+  padding: 60px;
+  border-radius: 15px;
+  box-shadow: 0 15px 50px rgba(74, 44, 42, 0.06); /* Signature Plum Shadow */
+  border: 1px solid #f2e1e1;
+}
+
+.luxe-contact-form h3 {
+  font-family: 'Playfair Display', serif;
+  color: #4a2c2a;
+  font-size: 1.8rem;
+  margin-bottom: 40px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.form-group {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #9e8e89;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+/* Clean Underline Input Style */
+.form-group input, 
+.form-group textarea {
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  border-bottom: 1px solid #eee;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #1a1a1a;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus, 
+.form-group textarea:focus {
+  border-bottom-color: #4a2c2a;
+  padding-left: 5px; /* Subtle movement on focus */
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+/* --- The Signature Button --- */
+
+.btn-luxe-submit {
+  width: 100%;
+  padding: 20px;
+  background-color: #4a2c2a; /* Signature Plum */
+  color: #fdfaf9; /* Signature Cream */
+  border: none;
+  border-radius: 4px;
+  letter-spacing: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  margin-top: 20px;
+}
+
+.btn-luxe-submit:hover {
+  background-color: #1a1a1a; /* Darker charcoal */
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.btn-luxe-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  
+  .contact-header h1 {
+    font-size: 2.2rem;
+  }
+  
+  .luxe-contact-form {
+    padding: 40px 25px;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}

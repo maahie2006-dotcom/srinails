@@ -227,18 +227,39 @@
 
 /* Mobile menu */
 .mobile-menu {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.4s ease;
+  position: fixed;
+  top: 0;
+  left: -100%;   /* hidden on left */
+  width: 260px;
+  height: 100vh;
   background: white;
-  border-top: 1px solid var(--blush);
+  transition: left 0.3s ease;
+  z-index: 2000;
+  border-right: 1px solid var(--blush);
 }
-.mobile-menu.open { max-height: 600px; }
+
+.mobile-menu.open {
+  left: 0;   /* slide in from left */
+}
 .mobile-links {
   display: flex;
   flex-direction: column;
   padding: 16px 24px 24px;
   gap: 0;
+}
+.mobile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 1, 1, 0.4);
+  z-index: 1500;
+}
+@media (max-width: 900px) {
+  .nav-dropdown {
+    display: none !important;
+  }
 }
 .mobile-links a, .mobile-links button {
   padding: 12px 0;
@@ -260,4 +281,14 @@
 }
 @media (max-width: 480px) {
   .logo-text { display: none; }
+}
+/* Target the specific trending/best seller section */
+.trending-item-image {
+    width: 100%;
+    max-width: 400px; /* Adjust this number to match your shop card size */
+    height: 450px;    /* Keeps consistency with other product images */
+    object-fit: cover; /* Ensures the photo isn't stretched */
+    border-radius: 15px;
+    margin: 0 auto;   /* Centers it if it's in a wide div */
+    display: block;
 }

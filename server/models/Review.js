@@ -12,6 +12,7 @@ const reviewSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+// Prevents a user from reviewing the same product twice
 reviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
 export default mongoose.model('Review', reviewSchema);

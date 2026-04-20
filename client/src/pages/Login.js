@@ -1,124 +1,173 @@
 import React, { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import './Auth.css';
 
-export const Login = () => {
+const Login = () => {
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/account';
-  const [form, setForm] = useState({ email: '', password: '' });
-  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     try {
-      await login(form.email, form.password);
-
-// ✅ ADD THIS LINE
-localStorage.setItem("email", form.email);
-      toast.success('Welcome back! 💅');
-      navigate(from, { replace: true });
+      // 1. Log in and get the user data back
+      const userData = await login(form.email, form.password);
+      
+      // 2. Check if the user is an admin
+      if (userData && userData.role === 'admin') {
+        localStorage.setItem("admin", "true"); // This "unlocks" the dashboard
+        toast.success('Welcome back, Mahi! 💅');
+        navigate('/admin/dashboard'); // Redirect straight to business
+      } else {
+        // Regular customers go to their account
+        localStorage.removeItem("admin"); 
+        toast.success('Welcome back to the Studio! ✨');
+        navigate('/account');
+      }
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
-    } finally { setLoading(false); }
+      toast.error('Invalid credentials. Please try again.');
+    }
+  };
+  const styles = {
+    wrapper: {
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#fdf8f4', 
+      padding: '140px 20px 60px',
+      fontFamily: "'Jost', sans-serif"
+    },
+    card: {
+      background: '#ffffff',
+      width: '100%',
+      maxWidth: '450px',
+      padding: '50px 40px',
+      borderRadius: '30px',
+      boxShadow: '0 20px 50px rgba(74, 37, 53, 0.1)',
+      textAlign: 'center',
+      border: '1px solid #f2cfc7'
+    },
+    labelLuxe: {
+      fontSize: '0.7rem',
+      fontWeight: '700',
+      letterSpacing: '0.2em',
+      color: '#c9a96e', 
+      display: 'block',
+      marginBottom: '10px'
+    },
+    title: {
+      fontFamily: "'Playfair Display', serif",
+      fontSize: '2.2rem',
+      color: '#4a2535', 
+      marginBottom: '8px'
+    },
+    subtitle: {
+      fontFamily: "'Cormorant Garamond', serif",
+      fontStyle: 'italic', // ✅ Fixed the missing quote here!
+      fontSize: '1.1rem',
+      color: '#9e8e89',
+      marginBottom: '35px'
+    },
+    inputGroup: {
+      textAlign: 'left',
+      marginBottom: '20px'
+    },
+    inputLabel: {
+      fontSize: '0.75rem',
+      fontWeight: '700',
+      textTransform: 'uppercase',
+      color: '#8b5e6b',
+      marginBottom: '8px',
+      display: 'block'
+    },
+    input: {
+      width: '100%',
+      padding: '15px',
+      borderRadius: '12px',
+      border: '1px solid #f2cfc7',
+      fontSize: '0.95rem',
+      outline: 'none',
+      backgroundColor: '#fafafa',
+      fontFamily: "'Jost', sans-serif"
+    },
+    submitBtn: {
+      width: '100%',
+      padding: '16px',
+      background: '#4a2535',
+      color: 'white',
+      border: 'none',
+      borderRadius: '50px',
+      fontWeight: '600',
+      letterSpacing: '1px',
+      cursor: 'pointer',
+      marginTop: '10px',
+      transition: '0.3s'
+    },
+    footer: {
+      marginTop: '30px',
+      paddingTop: '20px',
+      borderTop: '1px solid #f5f0ed'
+    }
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-deco" />
-      <div className="auth-card">
-        <div className="auth-logo">
-          <span>💅</span>
-          <h1>Welcome Back</h1>
-          <p>Sign in to your SriNails account</p>
-        </div>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-field">
-            <label className="form-label">Email Address</label>
-            <input type="email" className="form-input" placeholder="you@example.com" value={form.email}
-              onChange={e => setForm({...form, email: e.target.value})} required />
+    <div style={styles.wrapper}>
+      <div style={styles.card}>
+        <span style={styles.labelLuxe}>SRINAILS LUXE</span>
+        <h1 style={styles.title}>The Art of Press-Ons</h1>
+        <p style={styles.subtitle}>Sign in to manage your collection</p>
+
+        <form onSubmit={handleSubmit}>
+          <div style={styles.inputGroup}>
+            <label style={styles.inputLabel}>Email Address</label>
+            <input 
+              type="email" 
+              style={styles.input} 
+              placeholder="email@example.com"
+              onChange={e => setForm({...form, email: e.target.value})}
+              required 
+            />
           </div>
-          <div className="form-field">
-            <label className="form-label">Password</label>
-            <input type="password" className="form-input" placeholder="••••••••" value={form.password}
-              onChange={e => setForm({...form, password: e.target.value})} required />
+
+          <div style={styles.inputGroup}>
+            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+              <label style={styles.inputLabel}>Password</label>
+              <button 
+                type="button" 
+                onClick={() => setShowPassword(!showPassword)}
+                style={{fontSize: '0.65rem', color: '#d4817a', fontWeight: '700', border: 'none', background: 'none'}}
+              >
+                {showPassword ? 'HIDE' : 'SHOW'}
+              </button>
+            </div>
+            <input 
+              type={showPassword ? "text" : "password"} 
+              style={styles.input} 
+              placeholder="••••••••"
+              onChange={e => setForm({...form, password: e.target.value})}
+              required 
+            />
+            <div style={{textAlign: 'right', marginTop: '10px'}}>
+              <Link to="/forgot-password" style={{fontSize: '0.8rem', color: '#9e8e89', textDecoration: 'none'}}>
+                Forgot Password?
+              </Link>
+            </div>
           </div>
-          <Link to="/forgot-password" className="forgot-link">Forgot password?</Link>
-          <button type="submit" className="btn-primary auth-submit" disabled={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
+
+          <button type="submit" style={styles.submitBtn}>
+            SIGN IN TO STUDIO
           </button>
         </form>
-        <div className="divider"><span>or</span></div>
-        <p className="auth-switch">Don't have an account? <Link to="/register">Create one</Link></p>
-      </div>
-    </div>
-  );
-};
 
-export const Register = () => {
-  const { register } = useAuth();
-  const navigate = useNavigate();
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' });
-  const [loading, setLoading] = useState(false);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (form.password !== form.confirm) return toast.error('Passwords do not match');
-    if (form.password.length < 6) return toast.error('Password must be at least 6 characters');
-    setLoading(true);
-    try {
-      await register(form.name, form.email, form.password);
-
-// ✅ SAVE EMAIL
-localStorage.setItem("email", form.email);
-      toast.success('Account created! Welcome to the family 💅');
-      navigate('/account');
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Registration failed');
-    } finally { setLoading(false); }
-  };
-
-  return (
-    <div className="auth-page">
-      <div className="auth-deco" />
-      <div className="auth-card">
-        <div className="auth-logo">
-          <span>✨</span>
-          <h1>Join the Club</h1>
-          <p>Create your account & get 10% off your first order</p>
+        <div style={styles.footer}>
+          <p style={{fontSize: '0.9rem', color: '#9e8e89', marginBottom: '8px'}}>New to SriNails?</p>
+          <Link to="/register" style={{color: '#4a2535', fontWeight: '700', textDecoration: 'underline'}}>
+            Create Your Collection Profile
+          </Link>
         </div>
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-field">
-            <label className="form-label">Full Name</label>
-            <input type="text" className="form-input" placeholder="Your name" value={form.name}
-              onChange={e => setForm({...form, name: e.target.value})} required />
-          </div>
-          <div className="form-field">
-            <label className="form-label">Email Address</label>
-            <input type="email" className="form-input" placeholder="you@example.com" value={form.email}
-              onChange={e => setForm({...form, email: e.target.value})} required />
-          </div>
-          <div className="form-field">
-            <label className="form-label">Password</label>
-            <input type="password" className="form-input" placeholder="••••••••" value={form.password}
-              onChange={e => setForm({...form, password: e.target.value})} required />
-          </div>
-          <div className="form-field">
-            <label className="form-label">Confirm Password</label>
-            <input type="password" className="form-input" placeholder="••••••••" value={form.confirm}
-              onChange={e => setForm({...form, confirm: e.target.value})} required />
-          </div>
-          <p className="auth-terms">By creating an account, you agree to our <a href="/terms">Terms</a> & <a href="/privacy">Privacy Policy</a>.</p>
-          <button type="submit" className="btn-primary auth-submit" disabled={loading}>
-            {loading ? 'Creating account...' : 'Create Account ✨'}
-          </button>
-        </form>
-        <div className="divider"><span>or</span></div>
-        <p className="auth-switch">Already have an account? <Link to="/login">Sign in</Link></p>
       </div>
     </div>
   );

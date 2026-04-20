@@ -1,19 +1,39 @@
 import mongoose from 'mongoose';
 
 const productSchema = new mongoose.Schema({
+  // 1. Name and Price remain required as they are essential
   name: { type: String, required: true, trim: true },
-  slug: { type: String, unique: true },
-  description: { type: String, required: true },
-  shortDescription: String,
   price: { type: Number, required: true },
-  comparePrice: Number,
-  images: [{ url: String, alt: String, isPrimary: { type: Boolean, default: false } }],
+  
+  // 2. Collection is optional (matches your dropdown)
+  collection: { type: String, default: 'Everyday Glam' },
+
+  // 3. SLUG: Auto-generated, no longer causes "required" errors
+  slug: { type: String, unique: true },
+
+  // 4. DESCRIPTION: Changed to NOT required (Provides a default if empty)
+  description: { 
+    type: String, 
+    default: 'A premium handcrafted nail set designed for elegance and durability.' 
+  },
+
+  // 5. CATEGORY: Changed to NOT required (Defaults to 'custom' to satisfy the enum)
   category: {
     type: String,
     enum: ['coffin', 'almond', 'square', 'stiletto', 'round', 'oval', 'ballerina', 'custom'],
-    required: true
+    default: 'custom'
   },
-  collection: { type: String, default: '' },
+
+  // 6. IMAGES: Set up to accept the single URL from your admin form
+  images: [{ 
+    url: String, 
+    alt: String, 
+    isPrimary: { type: Boolean, default: true } 
+  }],
+
+  // Metadata & Toggles
+  shortDescription: String,
+  comparePrice: Number,
   tags: [String],
   sizes: [{
     label: String,
@@ -31,19 +51,27 @@ const productSchema = new mongoose.Schema({
   isFeatured: { type: Boolean, default: false },
   isBestSeller: { type: Boolean, default: false },
   isNew: { type: Boolean, default: true },
+  
   ratings: {
-    average: { type: Number, default: 0 },
+    average: { type: Number, default: 5, min: 0, max: 5 }, // Default 5 stars for new sets
     count: { type: Number, default: 0 }
   },
+  
   applicationMethod: { type: String, enum: ['glue', 'adhesive_tabs', 'both'], default: 'both' },
-  wearDuration: String,
+  wearDuration: { type: String, default: 'Up to 3 weeks' },
   inclusions: [String],
   createdAt: { type: Date, default: Date.now }
 });
 
+// Professional Slug Generator
 productSchema.pre('save', function (next) {
-  if (!this.slug) {
-    this.slug = this.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
+  if (this.isModified('name')) {
+    this.slug = this.name
+      .toLowerCase()
+      .trim()
+      .replace(/[^\w\s-]/g, '') 
+      .replace(/[\s_-]+/g, '-') 
+      .replace(/^-+|-+$/g, ''); 
   }
   next();
 });

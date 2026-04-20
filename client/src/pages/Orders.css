@@ -1,33 +1,107 @@
-.orders-page, .order-detail-page { padding: 48px 0 80px; }
-.orders-page h1, .order-detail-page h1 { font-size: 2rem; color: var(--plum); margin-bottom: 28px; }
-.loading-center { display: flex; justify-content: center; align-items: center; height: 60vh; font-size: 3rem; }
-.empty-orders-big { text-align: center; padding: 80px 0; }
-.empty-orders-big h2 { font-size: 1.6rem; color: var(--plum); margin: 16px 0 8px; }
-.empty-orders-big p { color: var(--mid-gray); margin-bottom: 24px; font-family: var(--font-accent); font-style: italic; font-size: 1.1rem; }
-.orders-table { background: white; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-soft); border: 1px solid var(--blush); }
-.orders-table-header { display: grid; grid-template-columns: 1.5fr 1fr 0.7fr 0.8fr 1fr auto; gap: 16px; padding: 14px 24px; background: var(--soft-gray); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mauve); }
-.orders-table-row { display: grid; grid-template-columns: 1.5fr 1fr 0.7fr 0.8fr 1fr auto; gap: 16px; padding: 18px 24px; align-items: center; border-top: 1px solid var(--blush); font-size: 0.88rem; transition: background 0.2s; }
-.orders-table-row:hover { background: var(--soft-gray); }
-.order-num { font-weight: 700; color: var(--plum); font-size: 0.82rem; }
-.order-detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
-.back-link { font-size: 0.85rem; color: var(--rose); display: block; margin-bottom: 8px; }
-.back-link:hover { text-decoration: underline; }
-.order-detail-header h1 { font-size: 1.6rem; color: var(--plum); }
-.order-detail-header p { color: var(--mid-gray); font-size: 0.88rem; margin-top: 4px; }
-.order-progress { display: flex; align-items: center; background: white; border-radius: var(--radius); padding: 24px 32px; margin-bottom: 32px; box-shadow: var(--shadow-soft); border: 1px solid var(--blush); }
-.prog-step { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 0.75rem; color: var(--mid-gray); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; }
-.prog-step.done { color: #2ea76a; }
-.prog-circle { width: 32px; height: 32px; border-radius: 50%; background: var(--soft-gray); border: 2px solid var(--blush); display: flex; align-items: center; justify-content: center; font-size: 0.82rem; font-weight: 700; transition: var(--transition); }
-.prog-step.done .prog-circle { background: #2ea76a; color: white; border-color: #2ea76a; }
-.prog-line { flex: 1; height: 2px; background: var(--blush); margin: 0 8px; margin-bottom: 16px; }
-.prog-line.done { background: #2ea76a; }
-.order-detail-layout { display: grid; grid-template-columns: 1fr 340px; gap: 24px; }
-.order-items-card, .order-info-card, .tracking-card { background: white; border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow-soft); border: 1px solid var(--blush); margin-bottom: 16px; }
-.order-items-card h3, .order-info-card h3, .tracking-card h3 { font-size: 1rem; color: var(--plum); margin-bottom: 18px; font-family: var(--font-body); font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.82rem; }
-.order-item-row { display: flex; gap: 14px; align-items: center; padding: 12px 0; border-top: 1px solid var(--blush); }
-.order-item-row img { width: 56px; height: 66px; object-fit: cover; border-radius: var(--radius-sm); }
-.oi-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
-.oi-info strong { font-size: 0.9rem; color: var(--dark); }
-.oi-info span { font-size: 0.78rem; color: var(--mid-gray); }
-.order-info-card address { font-style: normal; font-size: 0.9rem; color: var(--mid-gray); line-height: 1.8; }
-@media (max-width: 768px) { .orders-table-header, .orders-table-row { grid-template-columns: 1fr 1fr; } .orders-table-header span:nth-child(3), .orders-table-header span:nth-child(4), .orders-table-row span:nth-child(3), .orders-table-row span:nth-child(4) { display: none; } .order-detail-layout { grid-template-columns: 1fr; } .order-progress { overflow-x: auto; } }
+/* --- SriNails Orders List Styling --- */
+
+.orders-page { 
+    padding: 48px 0 80px; 
+    background: #fdf9fa;
+    min-height: 80vh;
+}
+
+.orders-page h1 { 
+    font-size: 2rem; 
+    color: var(--plum); 
+    margin-bottom: 28px; 
+    font-weight: 700;
+}
+
+.loading-center { 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 60vh; 
+    font-size: 1.5rem; 
+    color: var(--plum);
+}
+
+/* Empty State */
+.empty-orders-big { 
+    text-align: center; 
+    padding: 80px 0; 
+}
+
+.empty-orders-big h2 { 
+    font-size: 1.6rem; 
+    color: var(--plum); 
+    margin: 16px 0 8px; 
+}
+
+.empty-orders-big p { 
+    color: var(--mid-gray); 
+    margin-bottom: 24px; 
+    font-family: var(--font-accent); 
+    font-style: italic; 
+    font-size: 1.1rem; 
+}
+
+/* Orders Table */
+.orders-table { 
+    background: white; 
+    border-radius: var(--radius); 
+    overflow: hidden; 
+    box-shadow: var(--shadow-soft); 
+    border: 1px solid var(--blush); 
+}
+
+.orders-table-header { 
+    display: grid; 
+    grid-template-columns: 1.5fr 1fr 0.7fr 0.8fr 1fr auto; 
+    gap: 16px; 
+    padding: 14px 24px; 
+    background: var(--soft-gray); 
+    font-size: 0.75rem; 
+    font-weight: 700; 
+    letter-spacing: 0.1em; 
+    text-transform: uppercase; 
+    color: var(--mauve); 
+}
+
+.orders-table-row { 
+    display: grid; 
+    grid-template-columns: 1.5fr 1fr 0.7fr 0.8fr 1fr auto; 
+    gap: 16px; 
+    padding: 18px 24px; 
+    align-items: center; 
+    border-top: 1px solid var(--blush); 
+    font-size: 0.88rem; 
+    transition: 0.2s; 
+}
+
+.orders-table-row:hover { 
+    background: var(--soft-gray); 
+}
+
+.order-num { 
+    font-weight: 700; 
+    color: var(--plum); 
+    font-size: 0.82rem; 
+}
+
+/* Status Badges for Table */
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) { 
+    .orders-table-header, .orders-table-row { 
+        grid-template-columns: 1fr 1fr; 
+    } 
+    .orders-table-header span:nth-child(3), 
+    .orders-table-header span:nth-child(4), 
+    .orders-table-row span:nth-child(3), 
+    .orders-table-row span:nth-child(4) { 
+        display: none; 
+    } 
+}

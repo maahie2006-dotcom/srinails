@@ -5,132 +5,192 @@ import "./Admin.css";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     orders: 0,
     revenue: 0,
-    products: 0,
-    customers: 0
+    unreadMessages: 0
   });
 
   const [recentOrders, setRecentOrders] = useState([]);
 
   // 🔐 Protect Admin Route
   useEffect(() => {
+    const token = localStorage.getItem("ppn_token");
     const isAdmin = localStorage.getItem("admin");
-
-    if (!isAdmin) {
-      navigate("/admin/login");
+    
+    if (!token || isAdmin !== "true") {
+      navigate("/login");
     }
   }, [navigate]);
 
-  // 📊 Fetch Data
+  // 📊 Fetch Business Data
+  const fetchDashboardData = async () => {
+    try {
+      const token = localStorage.getItem('ppn_token');
+      const headers = { Authorization: `Bearer ${token}` };
+
+      // Optimized calls to catch new inquiries immediately
+      const [ordersRes, msgRes] = await Promise.all([
+        axios.get("http://localhost:5000/api/orders", { headers }),
+        axios.get("http://localhost:5000/api/contacts/admin/unread-count", { headers })
+          .catch(() => ({ data: { count: 0 } }))
+      ]);
+
+      const allOrders = ordersRes.data.orders || ordersRes.data || [];
+      setRecentOrders(allOrders.slice(0, 5));
+
+      const totalRevenue = allOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+
+      setStats({
+        orders: allOrders.length,
+        revenue: totalRevenue,
+        unreadMessages: msgRes.data.count || 0
+      });
+
+    } catch (err) {
+      console.error("Dashboard Sync Error:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    axios.get("/api/orders?limit=5")
-      .then(r => {
-        const orders = r.data.orders || [];
-        setRecentOrders(orders);
+    fetchDashboardData();
 
-        const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
-
-        setStats(prev => ({
-          ...prev,
-          orders: r.data.total || orders.length,
-          revenue
-        }));
-      })
-      .catch(() => {});
-
-    axios.get("/api/products?limit=1")
-      .then(r => {
-        setStats(prev => ({
-          ...prev,
-          products: r.data.total || 0
-        }));
-      })
-      .catch(() => {});
+    // 🔄 Auto-refresh stats every 60 seconds to catch new user messages
+    const interval = setInterval(fetchDashboardData, 60000);
+    return () => clearInterval(interval);
   }, []);
 
-  // 📊 Cards
   const statCards = [
-    { label: "Total Orders", value: stats.orders, emoji: "📦", color: "#f2cfc7" },
-    { label: "Revenue", value: `₹${stats.revenue.toFixed(2)}`, emoji: "💰", color: "#f0dfc1" },
-    { label: "Products", value: stats.products, emoji: "💅", color: "#e8d4e0" },
-    { label: "Customers", value: stats.customers, emoji: "👥", color: "#d4e8e0" },
+    { 
+      label: "Revenue", 
+      value: `₹${stats.revenue.toLocaleString('en-IN')}`, 
+      emoji: "💰", 
+      color: "#f0dfc1",
+      path: "/admin/orders" 
+    },
+    { 
+      label: "Total Orders", 
+      value: stats.orders, 
+      emoji: "📦", 
+      color: "#f2cfc7",
+      path: "/admin/orders" 
+    },
+    
   ];
 
+  if (loading) return <div className="loading-center">💅 Polishing SriNails Dashboard...</div>;
+
   return (
-    <div className="admin-page page-wrapper">
-      <div className="container">
+    <div className="admin-page dashboard-wrapper page-wrapper">
+      <div className="container animate-in">
 
-        {/* Header */}
-        <div className="admin-header">
-          <div>
-            <h1>Admin Dashboard</h1>
-            <p>Welcome back! Here's your store overview.</p>
+        {/* --- LUXURY ADMIN HEADER --- */}
+        <header className="admin-main-header">
+          <div className="header-title">
+            <h1>SriNails Overview</h1>
+            <p>Welcome back, Mahi. Your studio is looking great today.</p>
           </div>
 
-          <div className="admin-quick-links">
-            <Link to="/admin/products" className="btn-primary">+ Add Product</Link>
-            <Link to="/admin/orders" className="btn-secondary">View Orders</Link>
-
-            {/* 🔐 Logout */}
-            <button
-              onClick={() => {
-                localStorage.removeItem("admin");
-                navigate("/admin/login");
-              }}
-              className="btn-secondary"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="admin-stats">
-          {statCards.map(s => (
-            <div key={s.label} className="admin-stat-card" style={{ "--stat-color": s.color }}>
-              <div className="stat-emoji">{s.emoji}</div>
-              <div className="stat-value">{s.value}</div>
-              <div className="stat-label">{s.label}</div>
+          <div className="admin-actions-group">
+            <div className="personal-admin-links">
+              <Link to="/admin/offers" className="luxe-icon-link">🎫 Coupons</Link>
+              <Link to="/admin/messages" className="luxe-icon-link inbox-link-container">
+                💬 Inbox {stats.unreadMessages > 0 && <span className="nav-dot-small">{stats.unreadMessages}</span>}
+              </Link>
             </div>
-          ))}
-        </div>
+            
+            <div className="action-btns">
+              <Link to="/admin/products" className="btn-primary">+ New Set</Link>
+              <button
+                onClick={() => {
+                  localStorage.removeItem("admin");
+                  localStorage.removeItem("ppn_token");
+                  navigate("/login");
+                }}
+                className="btn-secondary"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </header>
 
-        {/* Orders */}
-        <div className="admin-section">
-          <div className="admin-section-header">
-            <h2>Recent Orders</h2>
-            <Link to="/admin/orders" className="view-all-link">View all →</Link>
+        {/* --- STATS GRID --- */}
+        <section className="stats-grid">
+          {statCards.map(s => (
+            <Link to={s.path} key={s.label} className="stat-card-anchor">
+              <div className="stat-card-luxe" style={{ borderLeft: `5px solid ${s.color}` }}>
+                <div className="stat-info">
+                  <div className="label-row">
+                      <span className="stat-label">{s.label}</span>
+                      {s.isNew && (
+                          <span className="new-badge-pulse">NEW</span>
+                      )}
+                  </div>
+                  <h2 className="stat-number">{s.value}</h2>
+                </div>
+                <div className="stat-icon-bg" style={{ backgroundColor: s.color }}>{s.emoji}</div>
+              </div>
+            </Link>
+          ))}
+        </section>
+
+        {/* --- RECENT ACTIVITY --- */}
+        <section className="admin-content-section luxe-card">
+          <div className="section-header-luxe">
+            <h2>Recent Store Orders</h2>
+            <Link to="/admin/orders" className="text-link">View All Business Orders →</Link>
           </div>
 
           {recentOrders.length === 0 ? (
-            <div className="admin-empty">No orders yet.</div>
+            <div className="empty-state-luxe">
+              <p>No customer orders yet. Time to market your sets! 💅</p>
+            </div>
           ) : (
-            <div className="admin-table">
-              <div className="admin-table-head">
-                <span>Order #</span>
-                <span>Customer</span>
-                <span>Date</span>
-                <span>Total</span>
-                <span>Status</span>
-                <span>Action</span>
-              </div>
-
-              {recentOrders.map(o => (
-                <div key={o._id} className="admin-table-row">
-                  <span>{o.orderNumber}</span>
-                  <span>{o.user?.name || "Unknown"}</span>
-                  <span>{new Date(o.createdAt).toLocaleDateString()}</span>
-                  <span>₹{o.total?.toFixed(2)}</span>
-                  <span>{o.status}</span>
-                  <Link to={`/orders/${o._id}`}>View</Link>
-                </div>
-              ))}
+            <div className="luxe-table-wrapper">
+              <table className="luxe-admin-table">
+                <thead>
+                  <tr>
+                    <th>ORDER ID</th>
+                    <th>CUSTOMER</th>
+                    <th>DATE</th>
+                    <th>TOTAL</th>
+                    <th>STATUS</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {recentOrders.map(o => (
+                    <tr key={o._id}>
+                      <td className="bold-text">#{o.orderNumber || o._id.slice(-6).toUpperCase()}</td>
+                      <td>
+                        <div className="customer-cell">
+                          <strong>{o.shippingAddress?.name || o.user?.name || "Guest User"}</strong>
+                          <span>{o.shippingAddress?.city || "Online"}</span>
+                        </div>
+                      </td>
+                      <td>{new Date(o.createdAt).toLocaleDateString()}</td>
+                      <td className="price-text">₹{o.total?.toLocaleString('en-IN')}</td>
+                      <td>
+                        <span className={`status-pill ${o.status?.toLowerCase()}`}>
+                          {o.status}
+                        </span>
+                      </td>
+                      <td>
+                        <Link to={`/admin/orders/${o._id}`} className="btn-secondary" style={{padding: '5px 12px', fontSize: '0.75rem'}}>
+                          Review
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
-        </div>
+        </section>
 
       </div>
     </div>
@@ -138,88 +198,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-// import { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
-// // import React, { useState, useEffect } from 'react';
-// import { Link } from 'react-router-dom';
-// import axios from 'axios';
-// import './Admin.css';
-
-// const AdminDashboard = () => {
-//   const [stats, setStats] = useState({ orders: 0, revenue: 0, products: 0, customers: 0 });
-//   const [recentOrders, setRecentOrders] = useState([]);
-
-//   useEffect(() => {
-//     axios.get('/api/orders?limit=5').then(r => {
-//       const orders = r.data.orders || [];
-//       setRecentOrders(orders);
-//       const revenue = orders.reduce((s, o) => s + (o.total || 0), 0);
-//       setStats(prev => ({ ...prev, orders: r.data.total || orders.length, revenue }));
-//     }).catch(() => {});
-//     axios.get('/api/products?limit=1').then(r => setStats(prev => ({ ...prev, products: r.data.total || 0 }))).catch(() => {});
-//   }, []);
-
-//   const statCards = [
-//     { label: 'Total Orders', value: stats.orders, emoji: '📦', color: '#f2cfc7' },
-//     { label: 'Revenue', value: `₹${stats.revenue.toFixed(2)}`, emoji: '💰', color: '#f0dfc1' },
-//     { label: 'Products', value: stats.products, emoji: '💅', color: '#e8d4e0' },
-//     { label: 'Customers', value: stats.customers, emoji: '👥', color: '#d4e8e0' },
-//   ];
-
-//   return (
-//     <div className="admin-page page-wrapper">
-//       <div className="container">
-//         <div className="admin-header">
-//           <div>
-//             <h1>Admin Dashboard</h1>
-//             <p>Welcome back! Here's your store overview.</p>
-//           </div>
-//           <div className="admin-quick-links">
-//             <Link to="/admin/products" className="btn-primary">+ Add Product</Link>
-//             <Link to="/admin/orders" className="btn-secondary">View Orders</Link>
-//           </div>
-//         </div>
-
-//         {/* Stat cards */}
-//         <div className="admin-stats">
-//           {statCards.map(s => (
-//             <div key={s.label} className="admin-stat-card" style={{ '--stat-color': s.color }}>
-//               <div className="stat-emoji">{s.emoji}</div>
-//               <div className="stat-value">{s.value}</div>
-//               <div className="stat-label">{s.label}</div>
-//             </div>
-//           ))}
-//         </div>
-
-//         {/* Recent orders */}
-//         <div className="admin-section">
-//           <div className="admin-section-header">
-//             <h2>Recent Orders</h2>
-//             <Link to="/admin/orders" className="view-all-link">View all →</Link>
-//           </div>
-//           {recentOrders.length === 0 ? (
-//             <div className="admin-empty">No orders yet.</div>
-//           ) : (
-//             <div className="admin-table">
-//               <div className="admin-table-head">
-//                 <span>Order #</span><span>Customer</span><span>Date</span><span>Total</span><span>Status</span><span>Action</span>
-//               </div>
-//               {recentOrders.map(o => (
-//                 <div key={o._id} className="admin-table-row">
-//                   <span className="admin-order-num">{o.orderNumber}</span>
-//                   <span>{o.user?.name || 'Unknown'}</span>
-//                   <span>{new Date(o.createdAt).toLocaleDateString()}</span>
-//                   <span className="price">₹{o.total?.toFixed(2)}</span>
-//                   <span><span className={`order-status ${o.status}`}>{o.status}</span></span>
-//                   <Link to={`/orders/${o._id}`} className="admin-action-btn">View</Link>
-//                 </div>
-//               ))}
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AdminDashboard;

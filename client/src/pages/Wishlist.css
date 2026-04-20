@@ -1,0 +1,120 @@
+/* --- SriNails Wishlist Styles --- */
+
+.sri-nails-wishlist {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 120px 20px 80px; /* Increased top padding for your fixed navbar */
+}
+
+.wishlist-hero {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.wishlist-hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+}
+
+.wishlist-hero p {
+    color: #666;
+    font-style: italic;
+}
+
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 40px;
+}
+
+.wishlist-card {
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+    transition: 0.3s ease;
+    border: 1px solid #f5f5f5;
+    overflow: hidden; /* Keeps the image corners rounded */
+}
+
+.wishlist-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+}
+
+.image-box {
+    position: relative;
+    height: 380px;
+    background-color: #f9f9f9;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px 20px 0 0;
+    transition: transform 0.5s ease;
+}
+
+.wishlist-card:hover .image-box img {
+    transform: scale(1.05); /* Subtle zoom on hover */
+}
+
+.remove-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    border: none;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: 0.2s;
+    z-index: 5;
+}
+
+.remove-btn:hover {
+    background: #1a1a1a;
+    color: #fff;
+}
+
+.content-box {
+    padding: 25px;
+    text-align: center;
+}
+
+.price {
+    color: #4a2c2a;; /* Luxury Gold */
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin: 10px 0 20px;
+}
+
+.cta-button {
+    width: 100%;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    border-radius: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-button:hover {
+    background: #d4af37; /* Switches to Gold on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+}

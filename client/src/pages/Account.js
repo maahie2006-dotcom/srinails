@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -7,6 +7,7 @@ import './Account.css';
 
 export const Account = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [tab, setTab] = useState('profile');
   const [form, setForm] = useState({ name: user?.name || '', phone: user?.phone || '' });
   const [pwForm, setPwForm] = useState({ currentPassword: '', newPassword: '', confirm: '' });
@@ -15,18 +16,29 @@ export const Account = () => {
   const handleProfileSave = async (e) => {
     e.preventDefault();
     setSaving(true);
-    try { await axios.put('/api/auth/me', form); toast.success('Profile updated!'); }
-    catch { toast.error('Update failed'); }
-    finally { setSaving(false); }
+    try { 
+      await axios.put('/api/auth/me', form); 
+      toast.success('Profile updated! 💅'); 
+    } catch { 
+      toast.error('Update failed'); 
+    } finally { 
+      setSaving(false); 
+    }
   };
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     if (pwForm.newPassword !== pwForm.confirm) return toast.error('Passwords do not match');
     setSaving(true);
-    try { await axios.put('/api/auth/password', pwForm); toast.success('Password updated!'); setPwForm({ currentPassword: '', newPassword: '', confirm: '' }); }
-    catch { toast.error('Wrong current password'); }
-    finally { setSaving(false); }
+    try { 
+      await axios.put('/api/auth/password', pwForm); 
+      toast.success('Password updated! 🔒'); 
+      setPwForm({ currentPassword: '', newPassword: '', confirm: '' }); 
+    } catch { 
+      toast.error('Wrong current password'); 
+    } finally { 
+      setSaving(false); 
+    }
   };
 
   return (
@@ -35,31 +47,53 @@ export const Account = () => {
         <div className="account-header">
           <div className="account-avatar">{user?.name?.[0] || '?'}</div>
           <div>
-            <h1>My Account</h1>
-            <p>{user?.email}</p>
+            <h1>{user?.role === 'admin' ? 'Admin Profile' : 'My Account'}</h1>
+            <p>{user?.email} <span className="role-tag">{user?.role}</span></p>
           </div>
         </div>
+
         <div className="account-layout">
           <nav className="account-nav">
-            {[['profile', '👤', 'Profile'], ['password', '🔒', 'Password'], ['orders', '📦', 'My Orders'], ['addresses', '📍', 'Addresses']].map(([t, i, l]) => (
-              <button key={t} className={`acc-nav-btn ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>{i} {l}</button>
-            ))}
-            <Link to="/wishlist" className="acc-nav-btn">🤍 Wishlist</Link>
+            <div className="nav-group-label">Settings</div>
+            <button className={`acc-nav-btn ${tab === 'profile' ? 'active' : ''}`} onClick={() => setTab('profile')}>👤 Profile</button>
+            <button className={`acc-nav-btn ${tab === 'password' ? 'active' : ''}`} onClick={() => setTab('password')}>🔒 Password</button>
+            
+            {/* ADMIN ONLY SECTION */}
+            {user?.role === 'admin' && (
+              <>
+                <div className="nav-group-label" style={{marginTop: '20px'}}>Store Management</div>
+                <button className="acc-nav-btn admin-btn" onClick={() => navigate('/admin/dashboard')}>📊 Dashboard</button>
+                <button className="acc-nav-btn admin-btn" onClick={() => navigate('/admin/orders')}>💰 Sales & Orders</button>
+                <button className="acc-nav-btn admin-btn" onClick={() => navigate('/admin/offers')}>🎫 Coupons</button>
+              </>
+            )}
+
+            {/* CUSTOMER ONLY SECTION - Hidden if you are Admin */}
+            {user?.role !== 'admin' && (
+              <>
+                <div className="nav-group-label" style={{marginTop: '20px'}}>Shopping</div>
+                <button className={`acc-nav-btn ${tab === 'orders' ? 'active' : ''}`} onClick={() => setTab('orders')}>📦 My Orders</button>
+                <button className={`acc-nav-btn ${tab === 'addresses' ? 'active' : ''}`} onClick={() => setTab('addresses')}>📍 Addresses</button>
+                <Link to="/wishlist" className="acc-nav-btn">🤍 Wishlist</Link>
+              </>
+            )}
           </nav>
+
           <div className="account-content">
             {tab === 'profile' && (
-              <div className="acc-panel">
+              <div className="acc-panel animate-in">
                 <h2>Personal Information</h2>
                 <form onSubmit={handleProfileSave} className="acc-form">
                   <div className="form-field"><label className="form-label">Full Name</label><input className="form-input" value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></div>
                   <div className="form-field"><label className="form-label">Email</label><input className="form-input" value={user?.email} disabled style={{ opacity: 0.6 }} /></div>
-                  <div className="form-field"><label className="form-label">Phone</label><input className="form-input" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} placeholder="+1 (555) 000-0000" /></div>
+                  <div className="form-field"><label className="form-label">Phone</label><input className="form-input" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} placeholder="+91 00000-00000" /></div>
                   <button type="submit" className="btn-primary" disabled={saving}>{saving ? 'Saving...' : 'Save Changes'}</button>
                 </form>
               </div>
             )}
+
             {tab === 'password' && (
-              <div className="acc-panel">
+              <div className="acc-panel animate-in">
                 <h2>Change Password</h2>
                 <form onSubmit={handlePasswordChange} className="acc-form">
                   <div className="form-field"><label className="form-label">Current Password</label><input className="form-input" type="password" value={pwForm.currentPassword} onChange={e => setPwForm({...pwForm, currentPassword: e.target.value})} /></div>
@@ -69,8 +103,9 @@ export const Account = () => {
                 </form>
               </div>
             )}
-            {tab === 'orders' && <OrdersTab />}
-            {tab === 'addresses' && <AddressesTab />}
+
+            {user?.role !== 'admin' && tab === 'orders' && <OrdersTab />}
+            {user?.role !== 'admin' && tab === 'addresses' && <AddressesTab />}
           </div>
         </div>
       </div>
@@ -80,9 +115,14 @@ export const Account = () => {
 
 const OrdersTab = () => {
   const [orders, setOrders] = useState([]);
-  useEffect(() => { axios.get('/api/orders/my').then(r => setOrders(r.data)).catch(() => {}); }, []);
+  useEffect(() => { 
+    axios.get('/api/orders/my')
+      .then(r => setOrders(r.data))
+      .catch(() => {}); 
+  }, []);
+
   return (
-    <div className="acc-panel">
+    <div className="acc-panel animate-in">
       <h2>My Orders</h2>
       {orders.length === 0 ? (
         <div className="empty-orders"><div>📦</div><p>No orders yet</p><Link to="/shop" className="btn-primary">Start Shopping</Link></div>
@@ -93,7 +133,7 @@ const OrdersTab = () => {
               <div><strong>#{o.orderNumber}</strong><span>{new Date(o.createdAt).toLocaleDateString()}</span></div>
               <div><span className={`order-status ${o.status}`}>{o.status}</span></div>
               <div><strong>₹{o.total?.toFixed(2)}</strong></div>
-              <Link to={`/orders/${o._id}`} className="btn-secondary" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>View</Link>
+              <Link to={`/orders/${o._id}`} className="btn-secondary luxe-view-btn">View</Link>
             </div>
           ))}
         </div>
@@ -102,84 +142,25 @@ const OrdersTab = () => {
   );
 };
 
- const AddressesTab = () => {
-  const [address, setAddress] = useState({
-    fullName: "",
-    phone: "",
-    addressLine: "",
-    city: "",
-    pincode: ""
-  });
-
-  const handleChange = (e) => {
-    setAddress({ ...address, [e.target.name]: e.target.value });
-  };
+const AddressesTab = () => {
+  const [address, setAddress] = useState({ fullName: "", phone: "", addressLine: "", city: "", pincode: "" });
 
   const handleSave = () => {
-    console.log(address);
-    alert("Address Saved ✅ (check console)");
+    toast.success("Address features coming soon! 💅");
   };
 
   return (
-    <div className="acc-panel">
+    <div className="acc-panel animate-in">
       <h2>Saved Addresses</h2>
-
       <div className="acc-form">
-
-        <div className="form-field">
-          <label className="form-label">Full Name</label>
-          <input
-            className="form-input"
-            name="fullName"
-            value={address.fullName}
-            onChange={handleChange}
-          />
+        <div className="form-field"><label className="form-label">Full Name</label><input className="form-input" value={address.fullName} onChange={e => setAddress({...address, fullName: e.target.value})} /></div>
+        <div className="form-field"><label className="form-label">Phone</label><input className="form-input" value={address.phone} onChange={e => setAddress({...address, phone: e.target.value})} /></div>
+        <div className="form-field"><label className="form-label">Address</label><input className="form-input" value={address.addressLine} onChange={e => setAddress({...address, addressLine: e.target.value})} /></div>
+        <div className="form-field-row">
+          <div className="form-field"><label className="form-label">City</label><input className="form-input" value={address.city} onChange={e => setAddress({...address, city: e.target.value})} /></div>
+          <div className="form-field"><label className="form-label">Pincode</label><input className="form-input" value={address.pincode} onChange={e => setAddress({...address, pincode: e.target.value})} /></div>
         </div>
-
-        <div className="form-field">
-          <label className="form-label">Phone</label>
-          <input
-            className="form-input"
-            name="phone"
-            value={address.phone}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">Address</label>
-          <input
-            className="form-input"
-            name="addressLine"
-            value={address.addressLine}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">City</label>
-          <input
-            className="form-input"
-            name="city"
-            value={address.city}
-            onChange={handleChange}
-          />
-        </div>
-
-        <div className="form-field">
-          <label className="form-label">Pincode</label>
-          <input
-            className="form-input"
-            name="pincode"
-            value={address.pincode}
-            onChange={handleChange}
-          />
-        </div>
-
-        <button className="btn-primary" onClick={handleSave}>
-          Save Address
-        </button>
-
+        <button className="btn-primary" onClick={handleSave}>Save Address</button>
       </div>
     </div>
   );

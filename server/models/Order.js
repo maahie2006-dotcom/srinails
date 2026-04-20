@@ -4,7 +4,7 @@ const orderSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   orderNumber: { type: String, unique: true },
   items: [{
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true },
     name: String,
     image: String,
     price: Number,
@@ -33,10 +33,12 @@ const orderSchema = new mongoose.Schema({
     country: String
   },
   payment: {
-    method: { type: String, enum: ['stripe', 'paypal', 'cod'] },
-    stripePaymentIntentId: String,
+    // UPDATED: Added 'Razorpay' to the allowed methods
+    method: { type: String, enum: ['stripe', 'paypal', 'cod', 'Razorpay'], default: 'Razorpay' },
+    razorpayOrderId: String,
+    razorpayPaymentId: String,
     status: { type: String, enum: ['pending', 'paid', 'failed', 'refunded'], default: 'pending' },
-    paidAt: Date
+    paidAt: { type: Date, default: Date.now }
   },
   status: {
     type: String,
@@ -55,9 +57,10 @@ const orderSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
+// Auto-generate a unique Order Number for SriNails
 orderSchema.pre('save', function (next) {
   if (!this.orderNumber) {
-    this.orderNumber = 'PPN-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    this.orderNumber = 'SRI-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
   }
   next();
 });

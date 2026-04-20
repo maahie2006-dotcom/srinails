@@ -1,46 +1,163 @@
-.auth-page {
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&display=swap');
+
+/* Main Wrapper and Aura Backgrounds */
+.auth-page-wrapper {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px 24px;
+  background-color: #fffafa; /* Softest Blush */
   position: relative;
-  background: var(--cream);
   overflow: hidden;
+  font-family: 'Inter', sans-serif;
+  padding: 100px 24px 60px; /* Safe padding for navbar */
 }
-.auth-deco {
+
+.aura-glow {
   position: absolute;
-  width: 600px; height: 600px;
   border-radius: 50%;
-  background: radial-gradient(ellipse, var(--blush) 0%, transparent 70%);
-  top: -200px; right: -100px;
+  filter: blur(100px);
+  z-index: 0;
   opacity: 0.5;
-  pointer-events: none;
 }
-.auth-card {
-  background: white;
-  border-radius: 24px;
-  padding: 48px 44px;
+
+.aura-top-right {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, #fce4ec 0%, transparent 70%); /* Blush Pink */
+  top: -10%;
+  right: -5%;
+}
+
+.aura-bottom-left {
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, #f3e5f5 0%, transparent 70%); /* Soft Lavender */
+  bottom: -15%;
+  left: -10%;
+}
+
+/* Glassmorphism Card */
+.glass-auth-card {
   width: 100%;
-  max-width: 460px;
-  box-shadow: var(--shadow-medium);
-  border: 1px solid var(--blush);
-  position: relative;
-  animation: fadeInUp 0.5s ease;
+  max-width: 480px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(212, 175, 55, 0.3); /* Soft Gold border */
+  border-radius: 28px;
+  padding: 3.5rem;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.06);
+  z-index: 1;
 }
-.auth-logo { text-align: center; margin-bottom: 32px; }
-.auth-logo span { font-size: 2.5rem; display: block; margin-bottom: 12px; }
-.auth-logo h1 { font-size: 1.8rem; color: var(--plum); margin-bottom: 8px; }
-.auth-logo p { font-family: var(--font-accent); font-style: italic; color: var(--mid-gray); font-size: 1rem; }
-.auth-form { display: flex; flex-direction: column; gap: 20px; }
-.form-field { display: flex; flex-direction: column; }
-.forgot-link { font-size: 0.82rem; color: var(--rose); text-align: right; margin-top: -12px; }
-.forgot-link:hover { text-decoration: underline; }
-.auth-submit { width: 100%; justify-content: center; padding: 16px; font-size: 0.95rem; }
-.auth-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
-.auth-terms { font-size: 0.78rem; color: var(--mid-gray); line-height: 1.6; }
-.auth-terms a { color: var(--rose); }
-.auth-switch { text-align: center; font-size: 0.88rem; color: var(--mid-gray); }
-.auth-switch a { color: var(--rose); font-weight: 600; }
-.auth-switch a:hover { text-decoration: underline; }
-@media (max-width: 480px) { .auth-card { padding: 32px 24px; } }
+
+.auth-header-luxe h1 {
+  font-family: 'Playfair Display', serif; /* Serif for Luxury */
+  color: #3d1a2a; /* Deep Plum Signature */
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.auth-header-luxe p {
+  color: #888;
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+/* Premium Inputs */
+.luxe-input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+.luxe-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Creates two equal columns */
+  gap: 15px; /* Adds space between the two fields */
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.luxe-input-row .luxe-input-group {
+  margin-bottom: 0; 
+}
+
+.luxe-input-row .luxe-input {
+  width: 100%;
+  box-sizing: border-box; /* Crucial for keeping padding inside the width */
+}
+
+.luxe-input-group label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #7a1a1a; /* Champagne Gold */
+  margin-bottom: 0.5rem;
+  padding-left: 4px;
+}
+
+.luxe-input-group input {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.luxe-input-group input:focus {
+  border-color: #7a1a1a;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.1);
+}
+
+/* The Button */
+.btn-luxe-submit {
+  width: 100%;
+  background: #3d1a2a; /* Deep Plum */
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+  margin-top: 1rem;
+}
+
+.btn-luxe-submit:hover {
+  background: #502538;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(61, 26, 42, 0.15);
+}
+
+.btn-luxe-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Footer Link */
+.auth-footer-luxe {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.accent-link {
+  color: #7a1a1a; /* Gold */
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 6px;
+  transition: color 0.3s;
+}
+
+.accent-link:hover {
+  color: #3d1a2a; /* Hover Plum */
+}

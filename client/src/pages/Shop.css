@@ -1,211 +1,227 @@
-.shop-page { padding-bottom: 80px; }
+/* LUXURY BOUTIQUE THEME */
+:root {
+  --gold: #d4af37;
+  --plum: #4a2c2a;
+  --rose-blush: #fcf6f6;
+  --border-light: #f2e1e1;
+  --text-main: #222222;
+  --text-muted: #888888;
+  --shadow-luxe: 0 20px 40px rgba(0,0,0,0.04);
+}
 
-.shop-breadcrumb {
-  background: white;
-  border-bottom: 1px solid var(--blush);
-  padding: 10px 0;
+.shop-page {
+  background-color: #fff;
+  padding-bottom: 100px;
 }
-.breadcrumb-inner {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.82rem;
-  color: var(--mid-gray);
-}
-.breadcrumb-inner a:hover { color: var(--rose); }
-.breadcrumb-inner span { color: var(--blush); }
-.breadcrumb-current { color: var(--plum); font-weight: 500; }
 
-.shop-header {
-  background: linear-gradient(135deg, var(--cream), white);
-  padding: 40px 0 32px;
-  border-bottom: 1px solid var(--blush);
-}
-.shop-title {
-  font-size: clamp(1.8rem, 3vw, 2.6rem);
-  color: var(--plum);
-  text-transform: capitalize;
-}
-.shop-subtitle { color: var(--mid-gray); font-size: 0.9rem; margin-top: 6px; }
-
-.shop-layout {
+/* 1. PROFESSIONAL SIDEBAR LAYOUT */
+.shop-container {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 40px;
-  margin-top: 36px;
+  grid-template-columns: 280px 1fr; /* Fixed sidebar width */
+  gap: 60px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
   align-items: start;
 }
 
-/* Sidebar */
 .shop-sidebar {
-  background: white;
-  border-radius: var(--radius);
-  padding: 28px 24px;
-  box-shadow: var(--shadow-soft);
-  border: 1px solid var(--blush);
   position: sticky;
-  top: 100px;
+  top: 120px; /* Locks sidebar while scrolling */
+  padding: 30px;
+  background: var(--rose-blush);
+  border-radius: 20px;
+  border: 1px solid var(--border-light);
+  text-align: left;
 }
-.sidebar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 24px;
-}
-.sidebar-header h3 {
-  font-size: 1rem;
-  font-weight: 600;
-  color: var(--plum);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-.sidebar-close { display: none; color: var(--mid-gray); font-size: 1.2rem; }
 
-.filter-group { margin-bottom: 28px; }
+.shop-sidebar h3 {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  margin-bottom: 25px;
+  border-bottom: 1px solid var(--border-light);
+  padding-bottom: 10px;
+}
+
+.filter-group {
+  margin-bottom: 40px;
+}
+
 .filter-group h4 {
-  font-size: 0.78rem;
+  font-size: 0.9rem;
+  color: var(--plum);
+  margin-bottom: 15px;
   font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--mauve);
-  margin-bottom: 14px;
 }
-.filter-pills { display: flex; flex-wrap: wrap; gap: 8px; }
-.filter-pill {
-  padding: 6px 14px;
-  border-radius: var(--radius-pill);
-  font-size: 0.8rem;
-  font-weight: 500;
-  border: 1.5px solid var(--blush);
-  color: var(--dark);
-  background: white;
-  transition: var(--transition);
-  text-transform: capitalize;
-}
-.filter-pill:hover { border-color: var(--rose); color: var(--rose); }
-.filter-pill.active { background: var(--rose); color: white; border-color: var(--rose); }
 
-.price-range { padding: 0 4px; }
+/* 2. LUXURY RANGE SLIDER */
 .range-slider {
   width: 100%;
-  accent-color: var(--rose);
-  margin-bottom: 8px;
+  accent-color: var(--plum);
+  height: 4px;
+  cursor: pointer;
 }
-.range-labels { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--mid-gray); }
 
+.range-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+}
+
+/* 3. CLEAN CHECKBOXES */
 .filter-check {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 6px 0;
+  gap: 12px;
+  margin-bottom: 15px;
+  font-size: 0.95rem;
+  color: var(--text-main);
   cursor: pointer;
-  font-size: 0.88rem;
-  color: var(--dark);
+  transition: 0.3s;
 }
-.filter-check input { accent-color: var(--rose); width: 14px; height: 14px; }
-.filter-check:hover span { color: var(--rose); }
 
-/* Main */
-.shop-toolbar {
+.filter-check input {
+  width: 18px;
+  height: 18px;
+  border: 1px solid var(--border-light);
+  accent-color: var(--plum);
+}
+
+.filter-check:hover {
+  color: var(--gold);
+}
+
+/* IMAGE SIZE CONTROL - This makes them look professional */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 30px;
+}
+.product-card {
+  background: white;
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.product-card:hover {
+  transform: translateY(-10px);
+}
+
+/* 5. IMAGE CONTAINMENT (Fixed "Too Big" Images) */
+.product-image-container {
+  width: 100%;
+  height: 320px; /* Fixed height for consistent look */
+  overflow: hidden;
+  border-radius: 12px;
+  display: block;
+}
+
+.product-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This forces huge images to fit the box */
+  transition: 0.4s ease;
+}
+
+.product-card:hover img {
+  transform: scale(1.1);
+}
+
+/* 6. OVERLAY (Glassmorphism) */
+.product-overlay {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 20%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0;
+  transition: 0.3s ease;
 }
-.filter-toggle-btn {
-  display: none;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border: 1.5px solid var(--blush);
-  border-radius: var(--radius-pill);
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--dark);
-  background: white;
-  transition: var(--transition);
-}
-.filter-toggle-btn:hover { border-color: var(--rose); color: var(--rose); }
-.results-count { font-size: 0.85rem; color: var(--mid-gray); flex: 1; }
-.sort-select {
-  padding: 8px 32px 8px 14px;
-  border: 1.5px solid var(--blush);
-  border-radius: var(--radius-pill);
-  font-size: 0.82rem;
-  color: var(--dark);
-  background: white;
-  outline: none;
-  cursor: pointer;
-  transition: var(--transition);
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239e8e89' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-}
-.sort-select:focus { border-color: var(--rose); }
 
-.category-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 28px;
+.product-card:hover .product-overlay {
+  opacity: 1;
 }
-.cat-pill {
-  padding: 8px 18px;
-  border-radius: var(--radius-pill);
-  font-size: 0.82rem;
-  font-weight: 500;
-  border: 1.5px solid var(--blush);
-  background: white;
-  color: var(--dark);
-  transition: var(--transition);
+
+.overlay-btn {
+  color: var(--plum);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* 7. PRODUCT INFO */
+..product-info {
+  padding: 15px 5px;
+  text-align: left;
+}
+.product-shape {
+  font-size: 0.7rem;
+  letter-spacing: 1.5px;
+  color: #d4af37;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.product-title {
+  font-size: 1rem;
+  margin: 5px 0;
+  color: #1a1a1a;
+  font-weight: 400;
   text-transform: capitalize;
 }
-.cat-pill:hover { border-color: var(--rose); color: var(--rose); }
-.cat-pill.active { background: var(--rose); color: white; border-color: var(--rose); }
 
-/* Empty state */
-.empty-state {
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-top: 8px;
+}
+.stars {
+  color: #e19d9d;
+  font-size: 0.8rem;
+  margin-bottom: 5px;
+}
+/* No Products State */
+.no-products {
   text-align: center;
-  padding: 80px 24px;
-  color: var(--mid-gray);
+  padding: 100px 0;
+  grid-column: span 3;
 }
-.empty-emoji { font-size: 4rem; margin-bottom: 16px; }
-.empty-state h3 { font-size: 1.3rem; color: var(--plum); margin-bottom: 8px; }
-.empty-state p { margin-bottom: 24px; }
 
-/* Pagination */
-.pagination { display: flex; justify-content: center; gap: 8px; margin-top: 48px; }
-.page-btn {
-  width: 40px; height: 40px;
-  border-radius: var(--radius-sm);
-  font-size: 0.88rem;
-  font-weight: 500;
-  border: 1.5px solid var(--blush);
-  background: white;
-  color: var(--dark);
-  transition: var(--transition);
+/* 8. LUXURY LOADER */
+.loader {
+  font-family: serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  padding: 100px;
+  color: var(--gold);
 }
-.page-btn:hover { border-color: var(--rose); color: var(--rose); }
-.page-btn.active { background: var(--rose); color: white; border-color: var(--rose); }
 
-/* Skeleton */
-.product-skeleton { border-radius: var(--radius); overflow: hidden; }
-
-@media (max-width: 900px) {
-  .shop-layout { grid-template-columns: 1fr; }
-  .shop-sidebar {
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
-    width: 300px;
-    z-index: 999;
-    transform: translateX(-100%);
-    transition: transform 0.35s ease;
-    border-radius: 0;
-    overflow-y: auto;
-  }
-  .shop-sidebar.open { transform: translateX(0); }
-  .filter-toggle-btn { display: flex; }
-  .sidebar-close { display: block; }
+@media (max-width: 1024px) {
+  .shop-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 40px;
+  max-width: 1300px;
+  margin: 40px auto;
+  padding: 0 20px;
+  align-items: start;
+}
+ .shop-sidebar {
+  position: sticky;
+  top: 100px;
+  text-align: left;
+  background: #fdfbfb;
+  padding: 25px;
+  border-radius: 15px;
+}
 }

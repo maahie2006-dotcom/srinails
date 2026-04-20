@@ -1,10 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import toast from 'react-hot-toast';
 import './Cart.css';
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity, subtotal, shipping, total, itemCount } = useCart();
+  const { 
+    cart, 
+    removeFromCart, 
+    updateQuantity, 
+    subtotal, 
+    shipping, 
+    discount, 
+    total, 
+    itemCount, 
+    applyCoupon, 
+    appliedCoupon, 
+    removeCoupon 
+  } = useCart();
+
+  const [couponCode, setCouponCode] = useState('');
+
+  const handleApplyCoupon = () => {
+    const result = applyCoupon(couponCode);
+    if (result.success) {
+      toast.success(result.message);
+      setCouponCode('');
+    } else {
+      toast.error(result.message);
+    }
+  };
 
   if (cart.length === 0) {
     return (
@@ -30,7 +55,7 @@ const Cart = () => {
         </div>
 
         <div className="cart-layout">
-          {/* Items */}
+          {/* Items Section */}
           <div className="cart-items">
             {cart.map(item => (
               <div key={item.key} className="cart-item">
@@ -65,7 +90,7 @@ const Cart = () => {
             ))}
           </div>
 
-          {/* Summary */}
+          {/* Summary Section */}
           <div className="cart-summary">
             <h3>Order Summary</h3>
 
@@ -73,30 +98,68 @@ const Cart = () => {
               <span>Subtotal</span>
               <span>₹{subtotal.toFixed(2)}</span>
             </div>
+
+            {/* Discount Row - Only shows when a coupon is applied */}
+            {discount > 0 && (
+              <div className="summary-row discount-row" style={{ color: '#4a2535', fontWeight: 'bold' }}>
+                <span>Discount ({appliedCoupon?.code})</span>
+                <span>- ₹{discount.toFixed(2)}</span>
+              </div>
+            )}
+
             <div className="summary-row">
               <span>Shipping</span>
-              <span className={shipping === 0 ? 'free-ship' : ''}>{shipping === 0 ? 'FREE' : `₹${shipping.toFixed(2)}`}</span>
+              <span className={shipping === 0 ? 'free-ship' : ''}>
+                {shipping === 0 ? 'FREE' : `₹${shipping.toFixed(2)}`}
+              </span>
             </div>
+
+            {/* Free Shipping Progress Bar (Based on ₹500 threshold) */}
             {shipping > 0 && (
               <div className="free-ship-msg">
-                Add <strong>₹{(50 - subtotal).toFixed(2)}</strong> more for free shipping!
+                Add <strong>₹{(500 - subtotal).toFixed(2)}</strong> more for free shipping!
                 <div className="ship-progress">
-                  <div className="ship-bar" style={{ width: `${Math.min((subtotal / 50) * 100, 100)}%` }} />
+                  <div className="ship-bar" style={{ width: `${Math.min((subtotal / 500) * 100, 100)}%` }} />
                 </div>
               </div>
             )}
+
             <div className="summary-divider" />
 
-            {/* Coupon */}
+            {/* Improved Coupon Section */}
             <div className="coupon-section">
-              <input type="text" placeholder="Coupon code" className="form-input coupon-input" />
-              <button className="coupon-btn">Apply</button>
+              {appliedCoupon ? (
+                <div className="applied-coupon-box" style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  width: '100%', 
+                  background: '#f9f5f6', 
+                  padding: '10px', 
+                  borderRadius: '5px',
+                  border: '1px dashed #4a2535' 
+                }}>
+                  <span style={{ color: '#4a2535', fontWeight: 'bold' }}>✓ {appliedCoupon.code}</span>
+                  <button onClick={removeCoupon} style={{ border: 'none', background: 'none', color: 'red', cursor: 'pointer' }}>Remove</button>
+                </div>
+              ) : (
+                <>
+                  <input 
+                    type="text" 
+                    placeholder="Coupon code" 
+                    className="form-input coupon-input" 
+                    value={couponCode}
+                    onChange={(e) => setCouponCode(e.target.value)}
+                  />
+                  <button className="coupon-btn" onClick={handleApplyCoupon}>Apply</button>
+                </>
+              )}
             </div>
 
             <div className="summary-total">
               <span>Total</span>
               <span>₹{total.toFixed(2)}</span>
             </div>
+
             <Link to="/checkout" className="btn-primary checkout-btn">Proceed to Checkout →</Link>
             <Link to="/shop" className="continue-shopping">← Continue Shopping</Link>
 

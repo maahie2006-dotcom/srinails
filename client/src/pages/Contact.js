@@ -1,197 +1,205 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import toast from "react-hot-toast";
+import "./Contact.css";
+import { useAuth } from "../context/AuthContext"; // Ensure you have AuthContext imported
 
 function Contact() {
+  const { user } = useAuth(); // Get logged-in user info
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: user?.name || '',
+    email: user?.email || '', 
+    subject: '',
+    message: ''
+  });
+
+  // --- FETCH MESSAGES LOGIC ---
+  const fetchMessages = async (targetEmail) => {
+    // Priority: 1. Passed email, 2. Logged in user, 3. LocalStorage
+    const emailToFetch = targetEmail || user?.email || localStorage.getItem("lastContactEmail");
+    
+    if (!emailToFetch) return;
+
+    try {
+      const emailLower = emailToFetch.toLowerCase().trim();
+      
+      // Fetch conversation history from your new backend route
+      const res = await axios.get(`/api/contact/my-messages/${emailLower}`);
+      
+      // Sort: Newest messages at the top
+      const sortedMessages = res.data.sort((a, b) => 
+        new Date(b.createdAt) - new Date(a.createdAt)
+      );
+      
+      setMessages(sortedMessages);
+
+      // Mark as read for the user
+      await axios.put(`/api/contact/mark-as-read/${emailLower}`);
+      
+      // Save this email so history persists on refresh
+      localStorage.setItem("lastContactEmail", emailLower);
+    } catch (err) {
+      console.error("Error loading history:", err);
+    }
+  };
+
+  // Load history on page load
+  useEffect(() => {
+    fetchMessages();
+  }, [user]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const data = {
-      name: e.target.name.value,
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
+    setLoading(true);
 
     try {
-      await axios.post("http://localhost:5000/api/contact", data);
-
-// refresh messages
-const email = localStorage.getItem("email");
-if (email) {
-  const res = await axios.get(`/api/contact/my-messages/${email}`);
-  setMessages(res.data);
-}
-      alert("Message sent successfully! 💅");
-      e.target.reset();
+      // 1. Send the message to Backend
+      await axios.post("/api/contact", formData);
+      toast.success("Message sent to SriNails! ✨");
+      
+      const submittedEmail = formData.email;
+      
+      // 2. Clear message & subject, but KEEP name/email for convenience
+      setFormData(prev => ({
+        ...prev,
+        subject: '',
+        message: ''
+      }));
+      
+      // 3. IMMEDIATELY refresh the sidebar history
+      fetchMessages(submittedEmail); 
+      
     } catch (error) {
-      alert("Error sending message ❌");
-      console.log(error);
+      toast.error("Failed to send ❌");
+    } finally {
+      setLoading(false);
     }
   };
-  const [messages, setMessages] = useState([]);
-  useEffect(() => {
-  const fetchMessages = async () => {
-    try {
-      const email = localStorage.getItem("email"); // user email
-      if (!email) return;
-
-      const res = await axios.get(`/api/contact/my-messages/${email}`);
-      setMessages(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  fetchMessages();
-}, []);
 
   return (
-    <div style={styles.container}>
-      
-      <h1 style={styles.heading}>💅 Contact Us</h1>
+    <div className="contact-luxe-page">
+      <div className="container luxe-wrapper">
+        <header className="contact-header">
+          <h1>Customer Care</h1>
+          <p>Handcrafted support for your luxury press-on experience.</p>
+        </header>
 
-      <div style={styles.box}>
+        <div className="contact-grid">
+          
+          {/* LEFT COLUMN: Info & Message History */}
+          <aside className="contact-sidebar">
+            <section className="info-block">
+              <h3>Connect With Us</h3>
+              <div className="contact-methods">
+                <p>✉️ <a href="mailto:nailnrutya@gmail.com">nailnrutya@gmail.com</a></p>
+                <p className="contact-method-item">
+                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4a2c2a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{marginRight: '10px'}}>
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                  <a href="https://instagram.com/nailnrutya" target="_blank" rel="noopener noreferrer">
+                    @nailnrutya
+                  </a>
+                </p>
+                <p>🕒 Mon–Fri, 9am–5pm IST</p>
+              </div>
+            </section>
 
-        {/* LEFT SIDE */}
-        <div style={styles.left}>
-          <h2>Contact Information</h2>
+            <section className="history-block">
+              <h3>Previous Inquiries</h3>
+              <div className="message-scroll-area">
+                {messages.length === 0 ? (
+                  <p className="empty-text">No conversation history yet.</p>
+                ) : (
+                  messages.map((msg) => (
+                    <div key={msg._id} className="history-card">
+                      <div className="history-user">
+                        <span className="msg-tag user-tag">You:</span> {msg.message}
+                      </div>
+                      
+                      {msg.reply ? (
+                        <div className="history-admin">
+                          <span className="msg-tag admin-tag">SriNails Studio:</span> {msg.reply}
+                        </div>
+                      ) : (
+                        <div className="history-pending">✨ We're reviewing your request...</div>
+                      )}
+                      <div className="msg-date">
+                        {new Date(msg.createdAt).toLocaleDateString()}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </section>
+          </aside>
 
-          <p>
-            📧 <a href="mailto:nailnrutya@gmail.com">
-              nailnrutya@gmail.com
-            </a>
-          </p>
-
-          <p>
-            📸 <a 
-              href="https://instagram.com/nailnrutya" 
-              target="_blank" 
-              rel="noopener noreferrer"
-            >
-              @nailnrutya
-            </a>
-          </p>
-
-          <p>🕐 Mon–Fri, 9am–5pm</p>
+          {/* RIGHT COLUMN: Send New Message */}
+          <main className="contact-main">
+            <form onSubmit={handleSubmit} className="luxe-contact-form">
+              <h3>Send a New Inquiry</h3>
+              <div className="form-row">
+                <div className="form-group">
+                  <label>Full Name</label>
+                  <input 
+                    type="text" 
+                    name="name" 
+                    placeholder="Enter your name" 
+                    value={formData.name}
+                    onChange={handleChange}
+                    required 
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Email Address</label>
+                  <input 
+                    type="email" 
+                    name="email" 
+                    placeholder="Enter your email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required 
+                  />
+                </div>
+              </div>
+              <div className="form-group">
+                <label>Subject</label>
+                <input 
+                  type="text" 
+                  name="subject" 
+                  placeholder="Custom Order / Sizing Help" 
+                  value={formData.subject}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              <div className="form-group">
+                <label>How can we help?</label>
+                <textarea 
+                  name="message" 
+                  placeholder="Type your message here..." 
+                  value={formData.message}
+                  onChange={handleChange}
+                  required 
+                />
+              </div>
+              <button type="submit" className="btn-luxe-submit" disabled={loading}>
+                {loading ? "Sending..." : "SEND MESSAGE 💅"}
+              </button>
+            </form>
+          </main>
         </div>
-
-        {/* RIGHT SIDE FORM */}
-        <div style={styles.right}>
-          <form onSubmit={handleSubmit}>
-            <h2 style={{ marginTop: "30px" }}>Your Messages 💬</h2>
-
-{messages.length === 0 ? (
-  <p>No messages yet</p>
-) : (
-  messages.map((msg) => (
-    <div key={msg._id} style={{
-      marginBottom: "20px",
-      padding: "10px",
-      border: "1px solid #ccc",
-      borderRadius: "5px"
-    }}>
-      
-      <p><strong>You:</strong> {msg.message}</p>
-
-      {msg.reply ? (
-        <p style={{ color: "green" }}>
-          <strong>Admin:</strong> {msg.reply}
-        </p>
-      ) : (
-        <p style={{ color: "gray" }}>Waiting for reply...</p>
-      )}
-
-    </div>
-  ))
-)}
-
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              required
-              style={styles.input}
-            />
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              required
-              style={styles.input}
-            />
-
-            <input
-              type="text"
-              name="subject"
-              placeholder="Subject"
-              required
-              style={styles.input}
-            />
-
-            <textarea
-              name="message"
-              placeholder="Your Message"
-              required
-              style={styles.textarea}
-            />
-
-            <button type="submit" style={styles.button}>
-              Send Message 💅
-            </button>
-
-          </form>
-        </div>
-
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    padding: "50px",
-    fontFamily: "Arial"
-  },
-  heading: {
-    textAlign: "center",
-    marginBottom: "30px"
-  },
-  box: {
-    display: "flex",
-    gap: "40px",
-    justifyContent: "center"
-  },
-  left: {
-    width: "40%"
-  },
-  right: {
-    width: "60%"
-  },
-  input: {
-    width: "100%",
-    padding: "10px",
-    marginBottom: "15px",
-    borderRadius: "5px",
-    border: "1px solid #ccc"
-  },
-  textarea: {
-    width: "100%",
-    height: "120px",
-    padding: "10px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    marginBottom: "15px"
-  },
-  button: {
-    background: "#ff69b4",
-    color: "white",
-    padding: "10px",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer"
-  }
-};
 
 export default Contact;
