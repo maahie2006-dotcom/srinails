@@ -1,0 +1,125 @@
+/* AdminSubscribers.css */
+
+.admin-page {
+  padding: 40px;
+  background: #fffcfc; /* Very soft pink-white */
+  min-height: 100vh;
+  font-family: 'Playfair Display', serif; /* Use a luxury serif font */
+}
+
+.admin-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #f2cbd0;
+  padding-bottom: 20px;
+}
+
+.admin-header-flex h2 {
+  color: #5a3d5c;
+  font-size: 2rem;
+  margin: 0;
+}
+
+.sub-text {
+  color: #a0808a;
+  font-size: 0.9rem;
+}
+
+/* Luxury Export Button */
+.btn-secondary {
+  background: #d4af37; /* Gold */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2);
+}
+
+.btn-secondary:hover {
+  background: #b8962d;
+  transform: translateY(-2px);
+}
+
+/* Glassmorphism Search Input */
+.admin-search-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 20px;
+  border: 1px solid #f2cbd0;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  margin-bottom: 25px;
+  outline: none;
+  transition: border 0.3s;
+}
+
+.admin-search-input:focus {
+  border-color: #d4af37;
+}
+
+/* The Table Design */
+.luxe-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px; /* Gap between rows */
+}
+
+.luxe-table th {
+  padding: 15px;
+  color: #5a3d5c;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.luxe-table tbody tr {
+  background: white;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+  transition: transform 0.2s;
+}
+
+.luxe-table tbody tr:hover {
+  transform: scale(1.01);
+}
+
+.luxe-table td {
+  padding: 15px;
+  color: #444;
+}
+
+.email-cell {
+  font-weight: 500;
+  color: #d4af37;
+}
+
+/* Delete Button */
+.delete-btn-icon {
+  background: #fff0f0;
+  color: #ff4d4d;
+  border: 1px solid #ffcccc;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.delete-btn-icon:hover {
+  background: #ff4d4d;
+  color: white;
+}
+
+/* Animation */
+.animate-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
     type: String, 
     required: [true, "Please provide a password"], 
     minlength: 6,
-    select: true // Ensures password is included for comparison logic
+    select: true 
   },
   role: { 
     type: String, 
@@ -30,6 +30,13 @@ const userSchema = new mongoose.Schema({
     type: String, 
     default: '' 
   },
+  
+  // ✅ NEW: Newsletter Subscription Status
+  isSubscribed: {
+    type: Boolean,
+    default: false
+  },
+
   addresses: [{
     label: String,
     street: String,
@@ -44,13 +51,11 @@ const userSchema = new mongoose.Schema({
     trim: true
   },
   
-  // Wishlist: Stores IDs of products the user likes
   wishlist: [{ 
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Product' 
   }],
 
-  // Cart: Stores product ID, quantity, and specific nail variants
   cart: [{
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
     quantity: { type: Number, default: 1 },
@@ -66,11 +71,10 @@ const userSchema = new mongoose.Schema({
     type: Date, 
     default: Date.now 
   }
-}, { timestamps: true }); // Automatically manages createdAt and updatedAt
+}, { timestamps: true });
 
 // Hash password before saving
 userSchema.pre('save', async function (next) {
-  // Only hash the password if it has been modified (or is new)
   if (!this.isModified('password')) return next();
 
   try {

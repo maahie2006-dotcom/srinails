@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
-import toast from 'react-hot-toast';
 import './Cart.css';
 
 const Cart = () => {
@@ -11,25 +10,11 @@ const Cart = () => {
     updateQuantity, 
     subtotal, 
     shipping, 
-    discount, 
+    discount,
+    tax, 
     total, 
-    itemCount, 
-    applyCoupon, 
-    appliedCoupon, 
-    removeCoupon 
+    itemCount
   } = useCart();
-
-  const [couponCode, setCouponCode] = useState('');
-
-  const handleApplyCoupon = () => {
-    const result = applyCoupon(couponCode);
-    if (result.success) {
-      toast.success(result.message);
-      setCouponCode('');
-    } else {
-      toast.error(result.message);
-    }
-  };
 
   if (cart.length === 0) {
     return (
@@ -99,10 +84,15 @@ const Cart = () => {
               <span>₹{subtotal.toFixed(2)}</span>
             </div>
 
-            {/* Discount Row - Only shows when a coupon is applied */}
+            <div className="summary-row">
+              <span>Tax (8%)</span>
+              <span>₹{tax.toFixed(2)}</span>
+            </div>
+
+            {/* Discount Row - Only shows when a coupon was applied elsewhere (like Checkout) */}
             {discount > 0 && (
               <div className="summary-row discount-row" style={{ color: '#4a2535', fontWeight: 'bold' }}>
-                <span>Discount ({appliedCoupon?.code})</span>
+                <span>Discount</span>
                 <span>- ₹{discount.toFixed(2)}</span>
               </div>
             )}
@@ -114,7 +104,7 @@ const Cart = () => {
               </span>
             </div>
 
-            {/* Free Shipping Progress Bar (Based on ₹500 threshold) */}
+            {/* Free Shipping Progress Bar */}
             {shipping > 0 && (
               <div className="free-ship-msg">
                 Add <strong>₹{(500 - subtotal).toFixed(2)}</strong> more for free shipping!
@@ -125,35 +115,6 @@ const Cart = () => {
             )}
 
             <div className="summary-divider" />
-
-            {/* Improved Coupon Section */}
-            <div className="coupon-section">
-              {appliedCoupon ? (
-                <div className="applied-coupon-box" style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  width: '100%', 
-                  background: '#f9f5f6', 
-                  padding: '10px', 
-                  borderRadius: '5px',
-                  border: '1px dashed #4a2535' 
-                }}>
-                  <span style={{ color: '#4a2535', fontWeight: 'bold' }}>✓ {appliedCoupon.code}</span>
-                  <button onClick={removeCoupon} style={{ border: 'none', background: 'none', color: 'red', cursor: 'pointer' }}>Remove</button>
-                </div>
-              ) : (
-                <>
-                  <input 
-                    type="text" 
-                    placeholder="Coupon code" 
-                    className="form-input coupon-input" 
-                    value={couponCode}
-                    onChange={(e) => setCouponCode(e.target.value)}
-                  />
-                  <button className="coupon-btn" onClick={handleApplyCoupon}>Apply</button>
-                </>
-              )}
-            </div>
 
             <div className="summary-total">
               <span>Total</span>

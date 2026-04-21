@@ -71,30 +71,30 @@ export const CartProvider = ({ children }) => {
   };
 
   // 3. Dynamic Apply Coupon with Backend Validation
-  const applyCoupon = async (code) => {
-    if (!code) return { success: false, message: "Please enter a code" };
+  
+
+ // Inside CartContext.js
+const applyCoupon = async (code) => {
+  if (!code) return false; // Return a simple boolean
+  
+  try {
+    const { data } = await axios.post('http://localhost:5000/api/coupons/validate', { 
+      code,
+      cartTotal: subtotal 
+    });
     
-    try {
-      const { data } = await axios.post('http://localhost:5000/api/coupons/validate', { 
-        code,
-        cartTotal: subtotal // Send current subtotal to check minPurchase
-      });
-      
-      setAppliedCoupon(data); 
-      return { success: true, message: data.message || `${data.code} Applied! 💅` };
-    } catch (err) {
-      return { 
-        success: false, 
-        message: err.response?.data?.message || "Invalid or Expired Code" 
-      };
-    }
-  };
+    setAppliedCoupon(data); 
+    return true; // Simple success
+  } catch (err) {
+    console.error(err);
+    return false; // Simple failure
+  }
+};
 
-  const removeCoupon = () => {
-    setAppliedCoupon(null);
-    toast.success("Coupon removed");
-  };
-
+// Update this to NOT have a toast inside it
+const removeCoupon = () => {
+  setAppliedCoupon(null);
+};
   // 4. Calculate Discount based on Model OfferTypes
   const getDiscount = () => {
     if (!appliedCoupon || cart.length === 0) return 0;

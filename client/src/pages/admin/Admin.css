@@ -1,4 +1,11 @@
-.luxury-admin { background: #fff; padding: 60px 20px; color: #1a1a1a; }
+.luxury-admin { background: #fff; padding: 60px 20px; color: #1a1a1a; min-height: 70vh; 
+  display: block; }
+
+  .page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
 .admin-header-luxe { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 40px; }
 .admin-header-luxe h1 { font-size: 1.8rem; letter-spacing: 1px; font-weight: 300; }
 
@@ -36,6 +43,132 @@ input:checked + .slider:before { transform: translateX(20px); }
 .btn-action-edit { background: none; border: none; color: #444; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
 .btn-action-edit:hover { text-decoration: underline; }
 .btn-action-remove { background: none; border: none; color: #ff4d4d; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+
+/* --- LUXE USER DROPDOWN (NEW REPLACED SECTION) --- */
+.user-dropdown-menu {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 300px;
+  background: #ffffff;
+  /* Extremely rounded corners matching Image 1 */
+  border-radius: 45px; 
+  /* Deep, soft luxury shadow with a hint of maroon */
+  box-shadow: 0 20px 60px rgba(168, 77, 77, 0.12); 
+  padding: 30px 10px;
+  border: 1px solid rgba(168, 77, 77, 0.05);
+  z-index: 1000;
+  animation: luxePopup 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-group-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #bfa3a8; /* Soft blush */
+  padding: 15px 30px 8px;
+  font-weight: 800;
+}
+
+/* --- CLEAN BOUTIQUE DROPDOWN --- */
+.user-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 250px; /* Standardized width */
+  background: #ffffff;
+  border-radius: 20px; /* Soft luxury curve */
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+  padding: 15px 0; /* Vertical breathing room */
+  margin-top: 15px;
+  border: 1px solid #f5f5f5;
+  z-index: 1000;
+  animation: luxeFadeIn 0.2s ease-out;
+}
+
+/* User Greeting Section */
+.dropdown-header {
+  padding: 10px 25px;
+  margin-bottom: 5px;
+}
+
+.dropdown-header span {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-size: 1rem;
+}
+
+/* Group Headers (MY SHOP, MY PROFILE) */
+.nav-group-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #bfa3a8; /* Elegant blush tone */
+  padding: 15px 25px 8px; /* Balanced spacing */
+  font-weight: 700;
+}
+
+/* Individual Item Styling */
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 25px; /* Equal left/right padding */
+  color: #4a4a4a;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  gap: 12px;
+  border: none;
+  background: transparent; /* Removes the red bubble from your screenshot */
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-item:hover {
+  background-color: #fdf8f9; /* Subtle pink hover */
+  color: #a84d4d; /* Maroon accent text */
+  padding-left: 30px; /* Elegant slide effect */
+}
+
+/* Icon refinement */
+.dropdown-icon { 
+  font-size: 1.1rem;
+  width: 20px;
+  text-align: center;
+}
+
+/* Sign Out Section */
+.sign-out-btn {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #f9f9f9;
+}
+
+.sign-out-btn .dropdown-item {
+  color: #999;
+}
+
+.sign-out-btn .dropdown-item:hover {
+  color: #ff4d4d;
+  background-color: #fff5f5;
+}
+
+@keyframes luxeFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+/* Bouncing popup animation */
+@keyframes luxePopup {
+  0% { opacity: 0; transform: translateY(20px) scale(0.9); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
 .admin-main-header {
   display: flex;
   justify-content: space-between;
@@ -72,7 +205,7 @@ input:checked + .slider:before { transform: translateX(20px); }
   transition: 0.3s;
 }
 
-.luxe-icon-link:hover { color: #d4af37; }
+.luxe-icon-link:hover { color: #d43780; }
 
 /* Stats Grid */
 .stats-grid {

@@ -42,7 +42,7 @@ import AdminProducts from './pages/admin/Products';
 import AdminOrders from './pages/admin/Orders';
 import AdminOffers from './pages/admin/AdminOffers'; 
 import Messages from "./pages/admin/Messages";
-
+import AdminSubscribers from './pages/admin/AdminSubscribers';
 import './index.css';
 
 // ✅ GLOBAL AXIOS CONFIGURATION
@@ -105,6 +105,7 @@ function App() {
                 <Route path="/admin/orders" element={<AdminRoute><AdminOrders /></AdminRoute>} />
                 <Route path="/admin/offers" element={<AdminRoute><AdminOffers /></AdminRoute>} />
                 <Route path="/admin/messages" element={<AdminRoute><Messages /></AdminRoute>} />
+                <Route path="/admin/subscribers" element={<AdminRoute><AdminSubscribers /></AdminRoute>} />
               </Routes>
             </main>
             

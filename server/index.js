@@ -22,6 +22,7 @@ import contactRoutes from "./routes/contactRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import couponRoutes from './routes/couponRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js'; 
+import newsletterRoutes from './routes/newsletterRoutes.js';
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/reviews', reviewRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok', message: 'SriNails API Running' }));
 

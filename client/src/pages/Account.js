@@ -11,6 +11,9 @@ export const Account = () => {
   const [tab, setTab] = useState('profile');
   const [form, setForm] = useState({ name: user?.name || '', phone: user?.phone || '' });
   const [pwForm, setPwForm] = useState({ currentPassword: '', newPassword: '', confirm: '' });
+  
+  // Newsletter State
+  const [isSubscribed, setIsSubscribed] = useState(user?.isSubscribed || false);
   const [saving, setSaving] = useState(false);
 
   const handleProfileSave = async (e) => {
@@ -41,6 +44,34 @@ export const Account = () => {
     }
   };
 
+  // ✅ Handle Subscription Toggle
+  const handleSubscriptionToggle = async () => {
+  setSaving(true);
+  try {
+    const newStatus = !isSubscribed;
+    
+    // 1. Updates the boolean in the User Model (Fixes the 404)
+    await axios.put('/api/users/update-subscription', { 
+      isSubscribed: newStatus,
+      userId: user._id // Pass the ID if not using auth middleware
+    });
+    
+    // 2. Syncs with the global Newsletter list
+    await axios.post('/api/newsletter/toggle-subscription', { 
+      email: user.email, 
+      isSubscribed: newStatus 
+    });
+
+    setIsSubscribed(newStatus);
+    toast.success(newStatus ? 'Subscribed! ✨' : 'Unsubscribed');
+  } catch (err) {
+    console.error(err);
+    toast.error('Could not update preferences');
+  } finally {
+    setSaving(false);
+  }
+};
+
   return (
     <div className="account-page page-wrapper">
       <div className="container">
@@ -57,18 +88,22 @@ export const Account = () => {
             <div className="nav-group-label">Settings</div>
             <button className={`acc-nav-btn ${tab === 'profile' ? 'active' : ''}`} onClick={() => setTab('profile')}>👤 Profile</button>
             <button className={`acc-nav-btn ${tab === 'password' ? 'active' : ''}`} onClick={() => setTab('password')}>🔒 Password</button>
+            {user?.role !== 'admin' && (
+              <button className={`acc-nav-btn ${tab === 'newsletter' ? 'active' : ''}`} onClick={() => setTab('newsletter')}>💌 Newsletter</button>
+            )}
             
             {/* ADMIN ONLY SECTION */}
             {user?.role === 'admin' && (
               <>
                 <div className="nav-group-label" style={{marginTop: '20px'}}>Store Management</div>
                 <button className="acc-nav-btn admin-btn" onClick={() => navigate('/admin/dashboard')}>📊 Dashboard</button>
+                <button className="acc-nav-btn admin-btn" onClick={() => navigate('/admin/subscribers')}>📧 Newsletter List</button>
                 <button className="acc-nav-btn admin-btn" onClick={() => navigate('/admin/orders')}>💰 Sales & Orders</button>
                 <button className="acc-nav-btn admin-btn" onClick={() => navigate('/admin/offers')}>🎫 Coupons</button>
               </>
             )}
 
-            {/* CUSTOMER ONLY SECTION - Hidden if you are Admin */}
+            {/* CUSTOMER ONLY SECTION */}
             {user?.role !== 'admin' && (
               <>
                 <div className="nav-group-label" style={{marginTop: '20px'}}>Shopping</div>
@@ -101,6 +136,30 @@ export const Account = () => {
                   <div className="form-field"><label className="form-label">Confirm New Password</label><input className="form-input" type="password" value={pwForm.confirm} onChange={e => setPwForm({...pwForm, confirm: e.target.value})} /></div>
                   <button type="submit" className="btn-primary" disabled={saving}>{saving ? 'Updating...' : 'Update Password'}</button>
                 </form>
+              </div>
+            )}
+
+            {tab === 'newsletter' && (
+              <div className="acc-panel animate-in">
+                <h2>Email Preferences</h2>
+                <div className="newsletter-pref-box">
+                  <div className="pref-info">
+                    <p>Subscribe to stay updated with <strong>SriNails</strong> new arrivals, exclusive luxury art drops, and nail care tips.</p>
+                  </div>
+                  <div className="pref-action">
+                    <label className="switch-label">
+                      <input 
+                        type="checkbox" 
+                        checked={isSubscribed} 
+                        onChange={handleSubscriptionToggle} 
+                        disabled={saving}
+                      />
+                      <span className="switch-text">
+                        {isSubscribed ? "You are currently Subscribed ✨" : "Join the mailing list 💅"}
+                      </span>
+                    </label>
+                  </div>
+                </div>
               </div>
             )}
 
