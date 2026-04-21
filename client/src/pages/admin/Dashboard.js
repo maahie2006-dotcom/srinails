@@ -30,7 +30,6 @@ const AdminDashboard = () => {
       const token = localStorage.getItem('ppn_token');
       const headers = { Authorization: `Bearer ${token}` };
 
-      // Optimized calls to catch new inquiries immediately
       const [ordersRes, msgRes] = await Promise.all([
         axios.get("http://localhost:5000/api/orders", { headers }),
         axios.get("http://localhost:5000/api/contacts/admin/unread-count", { headers })
@@ -57,8 +56,6 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchDashboardData();
-
-    // 🔄 Auto-refresh stats every 60 seconds to catch new user messages
     const interval = setInterval(fetchDashboardData, 60000);
     return () => clearInterval(interval);
   }, []);
@@ -78,7 +75,6 @@ const AdminDashboard = () => {
       color: "#f2cfc7",
       path: "/admin/orders" 
     },
-    
   ];
 
   if (loading) return <div className="loading-center">💅 Polishing SriNails Dashboard...</div>;
@@ -103,14 +99,17 @@ const AdminDashboard = () => {
             </div>
             
             <div className="action-btns">
-              <Link to="/admin/products" className="btn-primary">+ New Set</Link>
+              {/* ✅ CHANGED: Using btn-luxe-dark for Maroon branding */}
+              <Link to="/admin/products" className="btn-luxe-dark">+ New Set</Link>
+              
               <button
                 onClick={() => {
                   localStorage.removeItem("admin");
                   localStorage.removeItem("ppn_token");
                   navigate("/login");
                 }}
-                className="btn-secondary"
+                /* ✅ CHANGED: Using btn-luxe-outline to remove yellow logout */
+                className="btn-luxe-outline"
               >
                 Logout
               </button>
@@ -126,9 +125,6 @@ const AdminDashboard = () => {
                 <div className="stat-info">
                   <div className="label-row">
                       <span className="stat-label">{s.label}</span>
-                      {s.isNew && (
-                          <span className="new-badge-pulse">NEW</span>
-                      )}
                   </div>
                   <h2 className="stat-number">{s.value}</h2>
                 </div>
@@ -140,9 +136,9 @@ const AdminDashboard = () => {
 
         {/* --- RECENT ACTIVITY --- */}
         <section className="admin-content-section luxe-card">
-          <div className="section-header-luxe">
+          <div className="section-header-luxe" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '25px' }}>
             <h2>Recent Store Orders</h2>
-            <Link to="/admin/orders" className="text-link">View All Business Orders →</Link>
+            <Link to="/admin/orders" className="text-link" style={{color: '#a84d4d', fontWeight: '600'}}>View All Orders →</Link>
           </div>
 
           {recentOrders.length === 0 ? (
@@ -169,18 +165,23 @@ const AdminDashboard = () => {
                       <td>
                         <div className="customer-cell">
                           <strong>{o.shippingAddress?.name || o.user?.name || "Guest User"}</strong>
-                          <span>{o.shippingAddress?.city || "Online"}</span>
+                          <span style={{fontSize: '0.7rem', opacity: 0.6}}>{o.shippingAddress?.city || "Online"}</span>
                         </div>
                       </td>
                       <td>{new Date(o.createdAt).toLocaleDateString()}</td>
-                      <td className="price-text">₹{o.total?.toLocaleString('en-IN')}</td>
+                      <td className="price-text" style={{fontWeight: '700'}}>₹{o.total?.toLocaleString('en-IN')}</td>
                       <td>
                         <span className={`status-pill ${o.status?.toLowerCase()}`}>
                           {o.status}
                         </span>
                       </td>
                       <td>
-                        <Link to={`/admin/orders/${o._id}`} className="btn-secondary" style={{padding: '5px 12px', fontSize: '0.75rem'}}>
+                        {/* ✅ CHANGED: Swapped yellow Review for luxury Outline button */}
+                        <Link 
+                          to={`/admin/orders/${o._id}`} 
+                          className="btn-luxe-outline" 
+                          style={{padding: '5px 15px', fontSize: '0.7rem'}}
+                        >
                           Review
                         </Link>
                       </td>

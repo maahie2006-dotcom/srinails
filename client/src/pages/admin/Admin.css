@@ -1,243 +1,269 @@
-.luxury-admin { background: #fff; padding: 60px 20px; color: #1a1a1a; min-height: 70vh; 
-  display: block; }
+/* --- GLOBAL LUXURY WRAPPER --- */
+.luxury-admin { 
+  background: #fffcfb; /* Softest cream/white */
+  padding: 60px 20px; 
+  color: #1a1a1a; 
+  min-height: 70vh; 
+  display: block; 
+}
 
-  .page-wrapper {
+.page-wrapper {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
-.admin-header-luxe { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; margin-bottom: 40px; }
-.admin-header-luxe h1 { font-size: 1.8rem; letter-spacing: 1px; font-weight: 300; }
 
-.btn-luxe-main { background: #a84d4d; color: #fff; padding: 12px 24px; border: none; font-size: 0.75rem; letter-spacing: 2px; cursor: pointer; }
+/* --- HEADER SECTION --- */
+.admin-header-luxe { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  border-bottom: 2px solid #f2cfc7; /* Brand Blush */
+  padding-bottom: 20px; 
+  margin-bottom: 40px; 
+}
 
-/* Form Container */
-.admin-form-container-luxe { background: #fdfdfd; border: 1px solid #eee; padding: 40px; margin-bottom: 50px; border-radius: 8px; }
-.luxe-input-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 30px; }
-.luxe-group label { display: block; font-size: 0.7rem; color: #888; text-transform: uppercase; margin-bottom: 10px; }
-.luxe-group input, .luxe-group select { width: 100%; padding: 12px; border: 1px solid #ddd; outline: none; transition: 0.3s; }
-.luxe-group input:focus { border-color: #000; }
+.admin-header-luxe h1 { 
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem; 
+  letter-spacing: 1px; 
+  font-weight: 500; 
+  color: #4a2535; /* Brand Plum */
+}
 
-/* TOGGLE SWITCH DESIGN */
-.feature-toggles { display: flex; gap: 40px; margin-bottom: 30px; padding: 20px; background: #fff; border-radius: 6px; border: 1px solid #f0f0f0; }
-.toggle-item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: #444; }
+/* ✅ REMOVED YELLOW: Buttons now use Deep Rose */
+.btn-luxe-main { 
+  background: #a84d4d; /* Brand Deep Rose */
+  color: #fff; 
+  padding: 12px 28px; 
+  border: none; 
+  font-size: 0.75rem; 
+  letter-spacing: 2px; 
+  cursor: pointer; 
+  border-radius: 50px; /* Pill shape for luxury feel */
+  transition: 0.3s ease;
+}
+
+.btn-luxe-main:hover {
+  background: #8b3d3d;
+  transform: translateY(-2px);
+}
+
+/* --- FORM DESIGN --- */
+.admin-form-container-luxe { 
+  background: #ffffff; 
+  border: 1px solid #f2cfc7; 
+  padding: 40px; 
+  margin-bottom: 50px; 
+  border-radius: 15px; 
+  box-shadow: 0 10px 30px rgba(168, 77, 77, 0.05);
+}
+
+.luxe-input-grid { 
+  display: grid; 
+  grid-template-columns: repeat(2, 1fr); 
+  gap: 25px; 
+  margin-bottom: 30px; 
+}
+
+.luxe-group label { 
+  display: block; 
+  font-size: 0.7rem; 
+  color: #a0808a; 
+  text-transform: uppercase; 
+  margin-bottom: 10px; 
+  letter-spacing: 1.5px;
+}
+
+.luxe-group input, .luxe-group select { 
+  width: 100%; 
+  padding: 14px; 
+  border: 1.5px solid #f2cfc7; 
+  outline: none; 
+  transition: 0.3s; 
+  border-radius: 8px;
+}
+
+.luxe-group input:focus { 
+  border-color: #a84d4d; 
+  box-shadow: 0 0 0 4px rgba(168, 77, 77, 0.1);
+}
+
+/* --- TOGGLE SWITCH (Rose Accent) --- */
+.feature-toggles { 
+  display: flex; 
+  gap: 40px; 
+  margin-bottom: 30px; 
+  padding: 20px; 
+  background: #fff; 
+  border-radius: 12px; 
+  border: 1px solid #f2cfc7; 
+}
+
+.toggle-item { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: #4a2535; }
 
 .switch { position: relative; display: inline-block; width: 40px; height: 20px; }
 .switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 34px; }
+.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #eee; transition: .4s; border-radius: 34px; }
 .slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-input:checked + .slider { background-color: #000; }
+
+/* ✅ REMOVED BLACK: Checked toggle is now Rose */
+input:checked + .slider { background-color: #a84d4d; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-.btn-luxe-submit { width: 100%; background: #000; color: #fff; padding: 18px; border: none; letter-spacing: 3px; cursor: pointer; font-size: 0.8rem; }
+/* ✅ REMOVED BLACK: Submit button is now Deep Rose */
+.btn-luxe-submit { 
+  width: 100%; 
+  background: #a84d4d; 
+  color: #fff; 
+  padding: 18px; 
+  border: none; 
+  letter-spacing: 3px; 
+  cursor: pointer; 
+  font-size: 0.8rem; 
+  border-radius: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
 
-/* INVENTORY LIST */
-.luxe-inventory-list { border: 1px solid #f0f0f0; border-radius: 8px; }
-.inventory-item { display: grid; grid-template-columns: 80px 2fr 1fr 1fr; align-items: center; padding: 20px; border-bottom: 1px solid #f9f9f9; }
-.item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
-.item-name { display: block; font-weight: 600; font-size: 0.95rem; }
-.item-collection { font-size: 0.75rem; color: #999; text-transform: uppercase; }
-.item-price { font-weight: 700; color: #000; }
+/* --- INVENTORY LIST --- */
+.luxe-inventory-list { border: 1px solid #f2cfc7; border-radius: 15px; background: white; overflow: hidden; }
+.inventory-item { display: grid; grid-template-columns: 80px 2fr 1fr 1fr; align-items: center; padding: 20px; border-bottom: 1px solid #fff5f5; }
+.item-img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+.item-name { display: block; font-weight: 600; font-size: 0.95rem; color: #4a2535; }
+.item-collection { font-size: 0.75rem; color: #bfa3a8; text-transform: uppercase; }
+.item-price { font-weight: 700; color: #a84d4d; }
 
 .item-actions { display: flex; gap: 20px; justify-content: flex-end; }
-.btn-action-edit { background: none; border: none; color: #444; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
-.btn-action-edit:hover { text-decoration: underline; }
+.btn-action-edit { background: none; border: none; color: #a0808a; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
+.btn-action-edit:hover { color: #a84d4d; text-decoration: underline; }
 .btn-action-remove { background: none; border: none; color: #ff4d4d; font-weight: 600; cursor: pointer; font-size: 0.85rem; }
-
-/* --- LUXE USER DROPDOWN (NEW REPLACED SECTION) --- */
-.user-dropdown-menu {
-  position: absolute;
-  top: 120%;
-  right: 0;
-  width: 300px;
-  background: #ffffff;
-  /* Extremely rounded corners matching Image 1 */
-  border-radius: 45px; 
-  /* Deep, soft luxury shadow with a hint of maroon */
-  box-shadow: 0 20px 60px rgba(168, 77, 77, 0.12); 
-  padding: 30px 10px;
-  border: 1px solid rgba(168, 77, 77, 0.05);
-  z-index: 1000;
-  animation: luxePopup 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.nav-group-label {
-  font-family: 'Montserrat', sans-serif;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  color: #bfa3a8; /* Soft blush */
-  padding: 15px 30px 8px;
-  font-weight: 800;
-}
 
 /* --- CLEAN BOUTIQUE DROPDOWN --- */
 .user-dropdown-menu {
   position: absolute;
   top: 100%;
   right: 0;
-  width: 250px; /* Standardized width */
+  width: 260px;
   background: #ffffff;
-  border-radius: 20px; /* Soft luxury curve */
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-  padding: 15px 0; /* Vertical breathing room */
+  border-radius: 25px;
+  box-shadow: 0 20px 50px rgba(168, 77, 77, 0.12);
+  padding: 20px 0;
   margin-top: 15px;
-  border: 1px solid #f5f5f5;
+  border: 1px solid #fdf8f4;
   z-index: 1000;
-  animation: luxeFadeIn 0.2s ease-out;
+  animation: luxePopup 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-/* User Greeting Section */
-.dropdown-header {
-  padding: 10px 25px;
-  margin-bottom: 5px;
-}
+.dropdown-header { padding: 10px 25px; margin-bottom: 5px; border-bottom: 1px solid #fff5f5; }
+.dropdown-header span { font-family: 'Playfair Display', serif; font-weight: 700; color: #4a2535; font-size: 1.1rem; }
 
-.dropdown-header span {
-  font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  color: #1a1a1a;
-  font-size: 1rem;
-}
-
-/* Group Headers (MY SHOP, MY PROFILE) */
 .nav-group-label {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Jost', sans-serif;
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #bfa3a8; /* Elegant blush tone */
-  padding: 15px 25px 8px; /* Balanced spacing */
+  color: #bfa3a8;
+  padding: 15px 25px 8px;
   font-weight: 700;
 }
 
-/* Individual Item Styling */
 .dropdown-item {
   display: flex;
   align-items: center;
-  padding: 10px 25px; /* Equal left/right padding */
-  color: #4a4a4a;
+  padding: 12px 25px;
+  color: #4a2535;
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 500;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   gap: 12px;
   border: none;
-  background: transparent; /* Removes the red bubble from your screenshot */
+  background: transparent;
   width: 100%;
   cursor: pointer;
   text-align: left;
 }
 
 .dropdown-item:hover {
-  background-color: #fdf8f9; /* Subtle pink hover */
-  color: #a84d4d; /* Maroon accent text */
-  padding-left: 30px; /* Elegant slide effect */
+  background-color: #fdf8f9;
+  color: #a84d4d;
+  padding-left: 32px;
 }
 
-/* Icon refinement */
-.dropdown-icon { 
-  font-size: 1.1rem;
-  width: 20px;
-  text-align: center;
-}
+.dropdown-icon { font-size: 1.1rem; width: 20px; text-align: center; color: #c9a96e; }
 
-/* Sign Out Section */
-.sign-out-btn {
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #f9f9f9;
-}
+.sign-out-btn { margin-top: 10px; padding-top: 10px; border-top: 1px solid #fff5f5; }
+.sign-out-btn .dropdown-item { color: #bfa3a8; }
+.sign-out-btn .dropdown-item:hover { color: #ff4d4d; background-color: #fff5f5; }
 
-.sign-out-btn .dropdown-item {
-  color: #999;
-}
+/* --- ADMIN DASHBOARD ELEMENTS --- */
+.admin-main-header { display: flex; justify-content: space-between; align-items: center; padding: 40px 0; border-bottom: 1px solid #f2cfc7; margin-bottom: 40px; }
+.header-title h1 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #4a2535; margin: 0; }
+.header-title p { color: #a0808a; font-size: 0.9rem; }
 
-.sign-out-btn .dropdown-item:hover {
-  color: #ff4d4d;
-  background-color: #fff5f5;
-}
-
-@keyframes luxeFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-/* Bouncing popup animation */
-@keyframes luxePopup {
-  0% { opacity: 0; transform: translateY(20px) scale(0.9); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-
-.admin-main-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 40px 0;
-  border-bottom: 1px solid #f0f0f0;
-  margin-bottom: 40px;
-}
-
-.header-title h1 {
-  font-family: serif;
-  font-size: 2.2rem;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.header-title p { color: #888; font-size: 0.9rem; }
-
-/* Personal Links Area */
 .admin-actions-group { display: flex; align-items: center; gap: 30px; }
+.personal-admin-links { display: flex; gap: 20px; border-right: 1px solid #f2cfc7; padding-right: 20px; }
 
-.personal-admin-links {
-  display: flex;
-  gap: 20px;
-  border-right: 1px solid #ddd;
-  padding-right: 20px;
+.luxe-icon-link { text-decoration: none; color: #4a2c2a; font-size: 0.85rem; font-weight: 600; transition: 0.3s; }
+.luxe-icon-link:hover { color: #a84d4d; }
+
+/* Stats Grid */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 50px; }
+.stat-card-luxe { 
+  background: white; 
+  padding: 25px; 
+  border-radius: 18px; 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  box-shadow: 0 4px 20px rgba(168, 77, 77, 0.04);
+  border: 1px solid #fff5f5;
 }
 
-.luxe-icon-link {
-  text-decoration: none;
-  color: #4a2c2a;
-  font-size: 0.85rem;
+.stat-label { font-size: 0.75rem; text-transform: uppercase; color: #bfa3a8; letter-spacing: 1px; font-weight: 600; }
+.stat-number { font-size: 1.8rem; margin: 5px 0 0 0; color: #4a2535; font-family: 'Playfair Display', serif; }
+.stat-icon-bg { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+
+/* Table Styling */
+.luxe-table-wrapper { background: white; border-radius: 20px; padding: 25px; box-shadow: 0 10px 40px rgba(0,0,0,0.03); border: 1px solid #fdf8f4; }
+.luxe-admin-table { width: 100%; border-collapse: collapse; text-align: left; }
+.luxe-admin-table th { font-size: 0.7rem; color: #bfa3a8; padding: 15px; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+.luxe-admin-table td { padding: 20px 15px; border-bottom: 1px solid #fff5f5; font-size: 0.9rem; color: #4a2535; }
+
+/* ✅ STATUS PILLS: Replaced standard colors with Brand Luxury Tones */
+.status-pill { padding: 6px 14px; border-radius: 50px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+.status-pill.delivered { background: #e8f5e9; color: #2e7d32; }
+.status-pill.pending { background: #fdf8f4; color: #c9a96e; border: 1px solid #f2cfc7; } /* Gold/Cream combo */
+
+/* ✅ FINAL BUTTONS: Removed Black and standard Outline */
+.btn-luxe-dark { 
+  background: #a84d4d; 
+  color: white; 
+  padding: 12px 28px; 
+  border-radius: 50px; 
+  text-decoration: none; 
+  font-size: 0.8rem; 
   font-weight: 600;
   transition: 0.3s;
 }
 
-.luxe-icon-link:hover { color: #d43780; }
-
-/* Stats Grid */
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 25px;
-  margin-bottom: 50px;
+.btn-luxe-outline { 
+  background: transparent; 
+  border: 1.5px solid #a84d4d; 
+  color: #a84d4d; 
+  padding: 10px 25px; 
+  border-radius: 50px; 
+  cursor: pointer; 
+  font-weight: 600;
+  transition: 0.3s;
 }
 
-.stat-card-luxe {
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+.btn-luxe-outline:hover {
+  background: #a84d4d;
+  color: white;
 }
 
-.stat-label { font-size: 0.75rem; text-transform: uppercase; color: #999; letter-spacing: 1px; }
-.stat-number { font-size: 1.8rem; margin: 5px 0 0 0; color: #1a1a1a; }
-.stat-icon-bg { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
-
-/* Table Styling */
-.luxe-table-wrapper { background: white; border-radius: 15px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
-.luxe-admin-table { width: 100%; border-collapse: collapse; text-align: left; }
-.luxe-admin-table th { font-size: 0.7rem; color: #bbb; padding: 15px; text-transform: uppercase; letter-spacing: 1px; }
-.luxe-admin-table td { padding: 20px 15px; border-bottom: 1px solid #f9f9f9; font-size: 0.9rem; }
-
-.status-pill { padding: 5px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; background: #eee; }
-.status-pill.delivered { background: #d4e8e0; color: #2d6a4f; }
-.status-pill.pending { background: #fff3cd; color: #856404; }
-
-.btn-luxe-dark { background: #1a1a1a; color: white; padding: 12px 25px; border-radius: 4px; text-decoration: none; font-size: 0.8rem; }
-.btn-luxe-outline { background: transparent; border: 1px solid #1a1a1a; padding: 11px 25px; border-radius: 4px; cursor: pointer; }
+/* Animations */
+@keyframes luxeFadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes luxePopup { 0% { opacity: 0; transform: translateY(20px) scale(0.9); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
