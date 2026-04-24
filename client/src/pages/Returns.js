@@ -10,12 +10,12 @@ function Returns() {
       color: "#333"
     }}>
 
-      {/* Title */}
+      
       <h1 style={{ textAlign: "center", marginBottom: "30px" }}>
         Refund and Returns Policy
       </h1>
 
-      {/* Return Policy */}
+     
       <section style={{ marginBottom: "25px" }}>
         <h3>Return Policy</h3>
         <p>
@@ -28,7 +28,7 @@ function Returns() {
         <p><strong>WhatsApp:</strong> +91 XXXXX XXXXX</p>
       </section>
 
-      {/* Delay in Delivery */}
+      
       <section style={{ marginBottom: "25px" }}>
         <h3>Delay in Delivery</h3>
         <p>
@@ -36,7 +36,7 @@ function Returns() {
         </p>
       </section>
 
-      {/* Exchanges */}
+     
       <section style={{ marginBottom: "25px" }}>
         <h3>Exchanges</h3>
         <p>
@@ -51,7 +51,7 @@ function Returns() {
         <p><strong>Email:</strong> hello@prettypressnails.com</p>
       </section>
 
-      {/* Refund for Not Deliverable */}
+     
       <section style={{ marginBottom: "25px" }}>
         <h3>Refund on Not Deliverable Items</h3>
         <p>
@@ -61,7 +61,7 @@ function Returns() {
         <p><strong>WhatsApp:</strong> +91 XXXXX XXXXX</p>
       </section>
 
-      {/* Need Help */}
+      
       <section>
         <h3>Need Help?</h3>
         <p>

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
-import './Account.css'; // Let's use Account.css for global account layout
-import './Auth.css';    // We'll keep the specific form styling here
+import './Account.css';
+import './Auth.css';    
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -35,7 +35,7 @@ const Register = () => {
 
   return (
     <div className="auth-page-wrapper">
-      {/* Decorative Aura Background Elements */}
+     
       <div className="aura-glow aura-top-right"></div>
       <div className="aura-glow aura-bottom-left"></div>
       
@@ -66,8 +66,7 @@ const Register = () => {
             />
           </div>
 
-          {/* Grouping password and confirm on one row */}
-          {/* Grouping password and confirm in one row */}
+         
 <div className="luxe-input-row">
   <div className="luxe-input-group">
     <label>Password</label>

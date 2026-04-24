@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ProductCard from '../components/ProductCard'; // ✅ Import your professional component
+import ProductCard from '../components/ProductCard'; 
 import './Shop.css';
 
 const Shop = () => {
@@ -51,7 +51,7 @@ const Shop = () => {
     <div className="shop-page">
       <div className="shop-container">
         
-        {/* SIDEBAR FILTERS */}
+       
         <aside className="shop-sidebar">
           <div className="filter-group">
             <h3>FILTER</h3>
@@ -87,14 +87,14 @@ const Shop = () => {
           </div>
         </aside>
 
-        {/* PRODUCT GRID AREA */}
+       
         <main className="product-area">
           {loading ? (
             <div className="luxe-loader">Opening Boutique... ✨</div>
           ) : filtered.length > 0 ? (
             <div className="product-grid">
               {filtered.map(product => (
-                /* ✅ Use the professional component here */
+                
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>

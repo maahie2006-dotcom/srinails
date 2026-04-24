@@ -11,14 +11,14 @@ router.get('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
 
-        // Optimized Populate: Fetches the full product object including the images array
+        
         const wishlist = await Wishlist.find({ userId: userId })
             .populate({
                 path: 'productId',
-                // Explicitly selecting fields to ensure the frontend gets exactly what it needs
+                
                 select: 'name price images image description slug category' 
             })
-            .sort({ createdAt: -1 }); // Shows newest additions first
+            .sort({ createdAt: -1 }); 
 
         res.status(200).json(wishlist);
     } catch (err) {
@@ -35,13 +35,13 @@ router.get('/:userId', async (req, res) => {
 router.post('/add', async (req, res) => {
     const { userId, productId } = req.body;
     
-    // Safety check for incoming data
+    
     if (!userId || !productId) {
         return res.status(400).json({ message: "UserId and ProductId are required" });
     }
 
     try {
-        // Prevention: Check if the set is already in the collection
+        
         const existingItem = await Wishlist.findOne({ userId, productId });
         if (existingItem) {
             return res.status(400).json({ message: "Already in your collection ✨" });
@@ -50,8 +50,7 @@ router.post('/add', async (req, res) => {
         const newItem = new Wishlist({ userId, productId });
         await newItem.save();
         
-        // CRITICAL FIX: Populate the product details before sending back to frontend
-        // This ensures the image shows up INSTANTLY without a page refresh
+        
         const populatedItem = await Wishlist.findById(newItem._id).populate('productId');
         
         res.status(201).json(populatedItem);
@@ -68,7 +67,7 @@ router.post('/add', async (req, res) => {
  */
 router.delete('/remove/:id', async (req, res) => {
     try {
-        // Find by the Wishlist Item ID, not the Product ID
+        
         const item = await Wishlist.findByIdAndDelete(req.params.id);
         
         if (!item) {

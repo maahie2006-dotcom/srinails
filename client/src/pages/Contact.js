@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import "./Contact.css";
-import { useAuth } from "../context/AuthContext"; // Ensure you have AuthContext imported
+import { useAuth } from "../context/AuthContext"; 
 
 function Contact() {
-  const { user } = useAuth(); // Get logged-in user info
+  const { user } = useAuth(); 
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   
@@ -16,9 +16,9 @@ function Contact() {
     message: ''
   });
 
-  // --- FETCH MESSAGES LOGIC ---
+  
   const fetchMessages = async (targetEmail) => {
-    // Priority: 1. Passed email, 2. Logged in user, 3. LocalStorage
+    
     const emailToFetch = targetEmail || user?.email || localStorage.getItem("lastContactEmail");
     
     if (!emailToFetch) return;
@@ -26,27 +26,27 @@ function Contact() {
     try {
       const emailLower = emailToFetch.toLowerCase().trim();
       
-      // Fetch conversation history from your new backend route
+      
       const res = await axios.get(`/api/contact/my-messages/${emailLower}`);
       
-      // Sort: Newest messages at the top
+      
       const sortedMessages = res.data.sort((a, b) => 
         new Date(b.createdAt) - new Date(a.createdAt)
       );
       
       setMessages(sortedMessages);
 
-      // Mark as read for the user
+      
       await axios.put(`/api/contact/mark-as-read/${emailLower}`);
       
-      // Save this email so history persists on refresh
+      
       localStorage.setItem("lastContactEmail", emailLower);
     } catch (err) {
       console.error("Error loading history:", err);
     }
   };
 
-  // Load history on page load
+ 
   useEffect(() => {
     fetchMessages();
   }, [user]);
@@ -60,20 +60,20 @@ function Contact() {
     setLoading(true);
 
     try {
-      // 1. Send the message to Backend
+      
       await axios.post("/api/contact", formData);
       toast.success("Message sent to SriNails! ✨");
       
       const submittedEmail = formData.email;
       
-      // 2. Clear message & subject, but KEEP name/email for convenience
+     
       setFormData(prev => ({
         ...prev,
         subject: '',
         message: ''
       }));
       
-      // 3. IMMEDIATELY refresh the sidebar history
+     
       fetchMessages(submittedEmail); 
       
     } catch (error) {
@@ -93,7 +93,7 @@ function Contact() {
 
         <div className="contact-grid">
           
-          {/* LEFT COLUMN: Info & Message History */}
+          
           <aside className="contact-sidebar">
             <section className="info-block">
               <h3>Connect With Us</h3>
@@ -142,7 +142,7 @@ function Contact() {
             </section>
           </aside>
 
-          {/* RIGHT COLUMN: Send New Message */}
+          
           <main className="contact-main">
             <form onSubmit={handleSubmit} className="luxe-contact-form">
               <h3>Send a New Inquiry</h3>

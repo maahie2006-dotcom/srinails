@@ -12,16 +12,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // 1. Log in and get the user data back
+      
       const userData = await login(form.email, form.password);
       
-      // 2. Check if the user is an admin
+     
       if (userData && userData.role === 'admin') {
-        localStorage.setItem("admin", "true"); // This "unlocks" the dashboard
+        localStorage.setItem("admin", "true"); 
         toast.success('Welcome back, Mahi! 💅');
-        navigate('/admin/dashboard'); // Redirect straight to business
+        navigate('/admin/dashboard'); 
       } else {
-        // Regular customers go to their account
+        
         localStorage.removeItem("admin"); 
         toast.success('Welcome back to the Studio! ✨');
         navigate('/account');
@@ -66,8 +66,7 @@ const Login = () => {
     },
     subtitle: {
       fontFamily: "'Cormorant Garamond', serif",
-      fontStyle: 'italic', // ✅ Fixed the missing quote here!
-      fontSize: '1.1rem',
+      fontStyle: 'italic', 
       color: '#9e8e89',
       marginBottom: '35px'
     },

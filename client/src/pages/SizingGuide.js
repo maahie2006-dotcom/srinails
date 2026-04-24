@@ -4,7 +4,7 @@ function SizingGuide() {
   return (
     <div style={{
       maxWidth: "1200px",
-      margin: "0 auto",   // ✅ centers content
+      margin: "0 auto",   
       padding: "20px",
       textAlign: "center"
     }}>
@@ -14,11 +14,11 @@ function SizingGuide() {
         src="https://i.pinimg.com/1200x/9d/d0/b7/9dd0b77d683b4a398b1820118bd93655.jpg"
         alt="Size Guide"
         style={{
-          width: "100%",       // ✅ full responsive
-          maxWidth: "900px",   // ✅ control size
+          width: "100%",       
+          maxWidth: "900px",   
           height: "auto",
           display: "block",
-          margin: "20px auto", // ✅ center image
+          margin: "20px auto", 
           borderRadius: "10px"
         }}
       />

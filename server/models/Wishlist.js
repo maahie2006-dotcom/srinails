@@ -16,7 +16,7 @@ const wishlistSchema = new mongoose.Schema({
     }
 }, { timestamps: true });
 
-// This ensures the same user cannot add the same product twice
+
 wishlistSchema.index({ userId: 1, productId: 1 }, { unique: true });
 
 export default mongoose.model('Wishlist', wishlistSchema);

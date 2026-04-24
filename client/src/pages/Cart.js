@@ -7,7 +7,7 @@ const Cart = () => {
   const { 
     cart, 
     removeFromCart, 
-    updateQuantity, 
+    updateQuantity,   
     subtotal, 
     shipping, 
     discount,
@@ -40,7 +40,7 @@ const Cart = () => {
         </div>
 
         <div className="cart-layout">
-          {/* Items Section */}
+         
           <div className="cart-items">
             {cart.map(item => (
               <div key={item.key} className="cart-item">
@@ -75,7 +75,7 @@ const Cart = () => {
             ))}
           </div>
 
-          {/* Summary Section */}
+         
           <div className="cart-summary">
             <h3>Order Summary</h3>
 
@@ -89,7 +89,7 @@ const Cart = () => {
               <span>₹{tax.toFixed(2)}</span>
             </div>
 
-            {/* Discount Row - Only shows when a coupon was applied elsewhere (like Checkout) */}
+            
             {discount > 0 && (
               <div className="summary-row discount-row" style={{ color: '#4a2535', fontWeight: 'bold' }}>
                 <span>Discount</span>
@@ -104,7 +104,6 @@ const Cart = () => {
               </span>
             </div>
 
-            {/* Free Shipping Progress Bar */}
             {shipping > 0 && (
               <div className="free-ship-msg">
                 Add <strong>₹{(500 - subtotal).toFixed(2)}</strong> more for free shipping!

@@ -1,108 +1,3 @@
-// import React, { useState } from 'react';
-// import { useCart } from '../context/CartContext';
-// import toast from 'react-hot-toast';
-
-// const CouponSection = () => {
-//   const [couponCode, setCouponCode] = useState('');
-//   const { applyCoupon, appliedCoupon, removeCoupon } = useCart();
-
-//   // Inside CouponSection.jsx
-// // Add 'async' before the function
-// // Inside CouponSection.jsx
-
-// // Inside CouponSection.jsx
-
-// const handleApply = async () => {
-//   // Use await - this is mandatory
-//   const isSuccessful = await applyCoupon(couponCode); 
-  
-//   if (isSuccessful === true) {
-//     toast.success("Coupon Applied! ✨");
-//     setCouponCode('');
-//   } else {
-//     toast.error("Invalid coupon code 💅");
-//   }
-// };
-// const handleRemoveAction = () => {
-//   removeCoupon();
-//   // 4. This shows a success notification when removing
-//   toast.success("Coupon removed"); 
-// };
-
-// // In your return/JSX, update the Remove button:
-// <button 
-//   onClick={handleRemoveAction} 
-//   style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer' }}
-// >
-//   Remove
-// </button>
-
-//   return (
-//     <div style={{ margin: '20px 0' }}>
-//       {appliedCoupon ? (
-//         <div style={{ 
-//           display: 'flex', 
-//           justifyContent: 'space-between', 
-//           alignItems: 'center', 
-//           background: 'rgba(74, 37, 53, 0.05)', 
-//           padding: '12px', 
-//           borderRadius: '8px',
-//           border: '1px dashed #4a2535'
-//         }}>
-//           <span style={{ color: '#4a2535', fontWeight: '600', fontSize: '0.9rem' }}>
-//             ✨ {appliedCoupon.code} Applied
-//           </span>
-//           <button 
-//             onClick={removeCoupon}
-//             style={{ background: 'none', border: 'none', color: '#ff4d4d', cursor: 'pointer', fontWeight: 'bold' }}
-//           >
-//             Remove
-//           </button>
-//         </div>
-//       ) : (
-//         <div style={{ display: 'flex', gap: '10px' }}>
-//           <input
-//             type="text"
-//             placeholder="COUPON CODE"
-//             value={couponCode}
-//             onChange={(e) => setCouponCode(e.target.value)}
-//             style={{
-//               flex: 1,
-//               padding: '12px 15px',
-//               border: '1px solid #e0e0e0',
-//               borderRadius: '8px',
-//               fontSize: '0.85rem',
-//               letterSpacing: '1px',
-//               outline: 'none'
-//             }}
-//           />
-//           <button
-//             onClick={handleApply}
-//             style={{
-//               backgroundColor: '#4a2535',
-//               color: 'white',
-//               padding: '0 20px',
-//               border: 'none',
-//               borderRadius: '8px',
-//               cursor: 'pointer',
-//               fontSize: '0.8rem',
-//               fontWeight: '600',
-//               transition: 'opacity 0.2s'
-//             }}
-//             onMouseOver={(e) => e.target.style.opacity = '0.9'}
-//             onMouseOut={(e) => e.target.style.opacity = '1'}
-//           >
-//             APPLY
-//           </button>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default CouponSection;
-
-
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
@@ -127,7 +22,7 @@ const CouponSection = () => {
     }
   };
 
-  // Handle Remove Action with Notification
+  
   const handleRemoveAction = () => {
     removeCoupon();
     toast.success("Coupon removed"); 
@@ -136,7 +31,7 @@ const CouponSection = () => {
   return (
     <div style={{ margin: '20px 0' }}>
       {appliedCoupon ? (
-        /* UI for when a coupon IS applied */
+        
         <div style={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -166,7 +61,7 @@ const CouponSection = () => {
           </button>
         </div>
       ) : (
-        /* UI for when NO coupon is applied */
+        
         <div style={{ display: 'flex', gap: '10px' }}>
           <input
             type="text"

@@ -3,11 +3,11 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
-import ProductReviews from "../components/ProductReviews"; // ✅ Import the Review Component
+import ProductReviews from "../components/ProductReviews"; 
 import toast from "react-hot-toast";
 import "./ProductDetail.css";
 
-const Stars = ({ rating, size = 16 }) => (
+const Stars = ({ rating, size = 16 }) => (  
   <div className="stars">
     {[1, 2, 3, 4, 5].map((i) => (
       <span
@@ -65,7 +65,7 @@ const ProductDetail = () => {
 
   return (
     <div className="product-detail page-wrapper">
-      {/* Breadcrumb */}
+     
       <div className="detail-breadcrumb">
         <div className="container">
           <Link to="/">Home</Link> <span>/</span>
@@ -75,7 +75,7 @@ const ProductDetail = () => {
       </div>
 
       <div className="container detail-layout">
-        {/* Images Section */}
+        
         <div className="detail-images">
           <div className="detail-thumbnails">
             {product.images?.map((img, i) => (
@@ -97,7 +97,7 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Info Section */}
+       
         <div className="detail-info">
           <div className="detail-category">
             {product.collection} Luxe Collection
@@ -167,7 +167,7 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* Tabs Section */}
+     
       <div className="detail-tabs-section">
         <div className="container">
           <div className="tabs-nav">
@@ -216,7 +216,7 @@ const ProductDetail = () => {
         </div>
       </div>
 
-      {/* ✅ NEW REVIEW SECTION: Positioned at the bottom for social proof */}
+      
       <div className="container product-appraisals">
         <hr className="luxe-divider" />
         <ProductReviews productId={product._id} />

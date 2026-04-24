@@ -4,7 +4,7 @@ import { protect } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// @route   POST api/cart/sync
+
 router.post('/sync', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
@@ -16,7 +16,7 @@ router.post('/sync', protect, async (req, res) => {
   }
 });
 
-// @route   GET api/cart
+
 router.get('/', protect, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).populate('cart.product');

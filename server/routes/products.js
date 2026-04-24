@@ -4,8 +4,7 @@ import { protect, adminOnly } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// @route   GET /api/products
-// @desc    Get all products with luxury filtering and sorting
+
 router.get('/', async (req, res) => {
   try {
     const { 
@@ -21,14 +20,13 @@ router.get('/', async (req, res) => {
       limit = 12 
     } = req.query;
 
-    // Base filter: Only show active luxury sets
+   
     const filter = { isActive: true };
 
-    // Shape/Category Filter (e.g., Almond, Coffin)
+    
     if (category) filter.category = category;
 
-    // Collection Filter (Everyday Glam, Seasonal, etc.)
-    // Optimized to handle multiple collections if passed as a comma-separated string
+    
     if (collection) {
       const collectionArray = collection.split(',');
       filter.collection = { $in: collectionArray };
@@ -37,14 +35,14 @@ router.get('/', async (req, res) => {
     if (featured === 'true') filter.isFeatured = true;
     if (bestseller === 'true') filter.isBestSeller = true;
 
-    // Price Range Filter
+    
     if (minPrice || maxPrice) {
       filter.price = {};
       if (minPrice) filter.price.$gte = Number(minPrice);
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
 
-    // Search Logic (Name or Tags)
+    
     if (search) {
       filter.$or = [
         { name: { $regex: search, $options: 'i' } },
@@ -52,7 +50,7 @@ router.get('/', async (req, res) => {
       ];
     }
 
-    // Professional Sorting
+    
     const sortMap = {
       newest: { createdAt: -1 },
       price_asc: { price: 1 },
@@ -61,7 +59,7 @@ router.get('/', async (req, res) => {
     };
     const sortBy = sortMap[sort] || { createdAt: -1 };
 
-    // Pagination
+    
     const skip = (Number(page) - 1) * Number(limit);
 
     const [products, total] = await Promise.all([
@@ -85,8 +83,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// @route   GET /api/products/:slug
-// @desc    Get single product by URL slug
+
 router.get('/:slug', async (req, res) => {
   try {
     const product = await Product.findOne({ slug: req.params.slug, isActive: true });
@@ -97,14 +94,13 @@ router.get('/:slug', async (req, res) => {
   }
 });
 
-// @route   POST /api/products
-// @desc    Create a new luxury nail set (Admin Only)
+
 router.post('/', protect, adminOnly, async (req, res) => {
   try {
-    // Ensure data integrity before creation
+    
     const productData = {
       ...req.body,
-      // Default description if empty to satisfy schema
+      
       description: req.body.description || `${req.body.name} - Exclusive ${req.body.collection} set.`,
       isActive: true
     };
@@ -116,8 +112,7 @@ router.post('/', protect, adminOnly, async (req, res) => {
   }
 });
 
-// @route   PUT /api/products/:id
-// @desc    Update an existing set (Admin Only)
+
 router.put('/:id', protect, adminOnly, async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(
@@ -133,8 +128,7 @@ router.put('/:id', protect, adminOnly, async (req, res) => {
   }
 });
 
-// @route   DELETE /api/products/:id
-// @desc    Soft delete (Deactivate) a product
+
 router.delete('/:id', protect, adminOnly, async (req, res) => {
   try {
     const product = await Product.findByIdAndUpdate(req.params.id, { isActive: false });

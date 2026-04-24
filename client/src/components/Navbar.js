@@ -38,7 +38,7 @@ const Navbar = () => {
     axios.get('/api/coupons/latest-active')
       .then(res => {
         if (res.data) {
-          // ✅ FIX: Extract minPurchase from the response data here
+          
           const { offerType, code, discountValue, minPurchase } = res.data;
           let offerText = "";
 

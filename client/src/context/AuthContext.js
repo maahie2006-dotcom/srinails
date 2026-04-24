@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       axios.get('/api/auth/me')
         .then(res => {
           setUser(res.data);
-          // Optional: Sync latest data to localStorage on app load
+          
           if (res.data.cart) localStorage.setItem('ppn_cart', JSON.stringify(res.data.cart));
           if (res.data.wishlist) localStorage.setItem('ppn_wishlist', JSON.stringify(res.data.wishlist));
         })
@@ -39,10 +39,10 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     const { data } = await axios.post('/api/auth/login', { email, password });
     
-    // 1. Save Token
+    
     localStorage.setItem('ppn_token', data.token);
     
-    // 2. Restore Session Data: Put database items back into localStorage
+    
     if (data.user.cart) {
       localStorage.setItem('ppn_cart', JSON.stringify(data.user.cart));
     }
@@ -53,7 +53,7 @@ export const AuthProvider = ({ children }) => {
     axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
     setUser(data.user);
 
-    // 3. Force Refresh: This ensures Cart and Wishlist contexts re-initialize with the data above
+    
     window.location.href = '/account'; 
     return data.user;
   };
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await axios.post('/api/auth/register', { name, email, password });
     localStorage.setItem('ppn_token', data.token);
     
-    // New users will have empty arrays, but we set them for consistency
+    
     localStorage.setItem('ppn_cart', JSON.stringify([]));
     localStorage.setItem('ppn_wishlist', JSON.stringify([]));
 

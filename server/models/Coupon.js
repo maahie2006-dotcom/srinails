@@ -26,7 +26,7 @@ const couponSchema = new mongoose.Schema({
   expiryDate: {
     type: Date,
     required: true,
-    default: () => new Date(+new Date() + 30*24*60*60*1000) // Defaults to 30 days from now
+    default: () => new Date(+new Date() + 30*24*60*60*1000) 
   },
   isActive: { 
     type: Boolean, 
@@ -34,7 +34,7 @@ const couponSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Optional: Index for faster lookup during checkout
+
 couponSchema.index({ code: 1, isActive: 1 });
 
 const Coupon = mongoose.model('Coupon', couponSchema);

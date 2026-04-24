@@ -12,7 +12,6 @@ export const Account = () => {
   const [form, setForm] = useState({ name: user?.name || '', phone: user?.phone || '' });
   const [pwForm, setPwForm] = useState({ currentPassword: '', newPassword: '', confirm: '' });
   
-  // Newsletter State
   const [isSubscribed, setIsSubscribed] = useState(user?.isSubscribed || false);
   const [saving, setSaving] = useState(false);
 
@@ -44,19 +43,19 @@ export const Account = () => {
     }
   };
 
-  // ✅ Handle Subscription Toggle
+  
   const handleSubscriptionToggle = async () => {
   setSaving(true);
   try {
     const newStatus = !isSubscribed;
     
-    // 1. Updates the boolean in the User Model (Fixes the 404)
+   
     await axios.put('/api/users/update-subscription', { 
       isSubscribed: newStatus,
-      userId: user._id // Pass the ID if not using auth middleware
+      userId: user._id 
     });
     
-    // 2. Syncs with the global Newsletter list
+   
     await axios.post('/api/newsletter/toggle-subscription', { 
       email: user.email, 
       isSubscribed: newStatus 
@@ -92,7 +91,7 @@ export const Account = () => {
               <button className={`acc-nav-btn ${tab === 'newsletter' ? 'active' : ''}`} onClick={() => setTab('newsletter')}>💌 Newsletter</button>
             )}
             
-            {/* ADMIN ONLY SECTION */}
+           
             {user?.role === 'admin' && (
               <>
                 <div className="nav-group-label" style={{marginTop: '20px'}}>Store Management</div>
@@ -103,7 +102,7 @@ export const Account = () => {
               </>
             )}
 
-            {/* CUSTOMER ONLY SECTION */}
+           
             {user?.role !== 'admin' && (
               <>
                 <div className="nav-group-label" style={{marginTop: '20px'}}>Shopping</div>

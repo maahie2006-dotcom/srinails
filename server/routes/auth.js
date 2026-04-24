@@ -8,7 +8,7 @@ const router = express.Router();
 const signToken = (id) => 
   jwt.sign({ id }, process.env.JWT_SECRET || 'prettynails_secret', { expiresIn: '30d' });
 
-// Register
+
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -26,8 +26,8 @@ router.post('/register', async (req, res) => {
         name, 
         email, 
         role: user.role,
-        cart: [],      // New users start with empty cart
-        wishlist: []   // New users start with empty wishlist
+        cart: [],      
+        wishlist: []   
       } 
     });
   } catch (err) {
@@ -40,7 +40,7 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
     
-    // We populate 'wishlist' and 'cart.product' to send full details back to React
+    
     const user = await User.findOne({ email: req.body.email.toLowerCase()  })
       .populate('wishlist')
       .populate('cart.product');
@@ -57,8 +57,8 @@ router.post('/login', async (req, res) => {
         email, 
         role: user.role, 
         avatar: user.avatar,
-        cart: user.cart || [],       // Send saved cart back to frontend
-        wishlist: user.wishlist || [] // Send saved wishlist back to frontend
+        cart: user.cart || [],       
+        wishlist: user.wishlist || [] 
       } 
     });
   } catch (err) {
@@ -66,9 +66,9 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Get profile
+
 router.get('/me', protect, async (req, res) => {
-  // Populate here too so refreshing the page restores the cart/wishlist
+  
   const user = await User.findById(req.user._id)
     .populate('wishlist')
     .populate('cart.product')
@@ -76,7 +76,7 @@ router.get('/me', protect, async (req, res) => {
   res.json(user);
 });
 
-// Update profile
+
 router.put('/me', protect, async (req, res) => {
   try {
     const { name, phone, addresses } = req.body;
@@ -91,7 +91,7 @@ router.put('/me', protect, async (req, res) => {
   }
 });
 
-// Change password
+
 router.put('/password', protect, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;

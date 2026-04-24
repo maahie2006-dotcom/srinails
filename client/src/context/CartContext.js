@@ -10,7 +10,7 @@ export const CartProvider = ({ children }) => {
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
 
-  // 1. Fetch Cart from Database or LocalStorage on Login
+ 
   useEffect(() => {
     const fetchCart = async () => {
       const token = localStorage.getItem('ppn_token');
@@ -37,7 +37,7 @@ export const CartProvider = ({ children }) => {
     fetchCart();
   }, []);
 
-  // 2. Sync Cart to Database & LocalStorage whenever it changes
+  
   useEffect(() => {
     if (isInitialLoad) return;
 
@@ -57,7 +57,7 @@ export const CartProvider = ({ children }) => {
 
       return () => clearTimeout(syncTimeout);
     } else {
-      // If user logs out, clear the state
+      
       if (!token && cart.length > 0) setCart([]);
     }
   }, [cart, isInitialLoad]);
@@ -65,17 +65,17 @@ export const CartProvider = ({ children }) => {
   // Calculations
   const subtotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
-  // ✅ Helper to update discount from Checkout.jsx
+  
   const setDiscountData = (couponData) => {
     setAppliedCoupon(couponData);
   };
 
-  // 3. Dynamic Apply Coupon with Backend Validation
+  
   
 
- // Inside CartContext.js
+ 
 const applyCoupon = async (code) => {
-  if (!code) return false; // Return a simple boolean
+  if (!code) return false; 
   
   try {
     const { data } = await axios.post('http://localhost:5000/api/coupons/validate', { 
@@ -84,26 +84,26 @@ const applyCoupon = async (code) => {
     });
     
     setAppliedCoupon(data); 
-    return true; // Simple success
+    return true; 
   } catch (err) {
     console.error(err);
-    return false; // Simple failure
+    return false; 
   }
 };
 
-// Update this to NOT have a toast inside it
+
 const removeCoupon = () => {
   setAppliedCoupon(null);
 };
-  // 4. Calculate Discount based on Model OfferTypes
+  
   const getDiscount = () => {
     if (!appliedCoupon || cart.length === 0) return 0;
 
-    // Handle BOGO (Buy One Get One - cheapest item free)
+    
     if (appliedCoupon.offerType === 'BOGO') {
       const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
       if (totalItems < 2) return 0;
-      // Get the price of the single cheapest item in the cart
+     
       const prices = cart.map(i => i.price);
       return Math.min(...prices);
     }
@@ -113,7 +113,7 @@ const removeCoupon = () => {
       return (subtotal * appliedCoupon.discountValue) / 100;
     }
 
-    // Handle Flat Discount (e.g., ₹100 off)
+   
     if (appliedCoupon.offerType === 'Flat') {
       return appliedCoupon.discountValue;
     }
@@ -158,10 +158,10 @@ const removeCoupon = () => {
   const discountAmount = getDiscount();
   const itemCount = cart.reduce((sum, i) => sum + i.quantity, 0);
   
-  // Luxury branding: Tax is calculated on discounted price
+  
   const tax = (subtotal - discountAmount) * 0.08;
   
-  // Free shipping over 500 logic
+  
   const shipping = (subtotal - discountAmount) >= 500 || cart.length === 0 ? 0 : 50; 
   
   const total = subtotal - discountAmount + tax + shipping;

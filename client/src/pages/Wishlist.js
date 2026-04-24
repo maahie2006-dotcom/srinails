@@ -6,15 +6,15 @@ import toast from 'react-hot-toast';
 import './Wishlist.css'; 
 
 const Wishlist = () => {
-  // Destructure state and toggleWishlist from context
+ 
   const { state, toggleWishlist } = useWishlist();
   const { addToCart } = useCart();
 
-  // Safety check: Fallback to defaults if state isn't fully loaded yet
+  
   const items = state?.items || [];
   const loading = state?.loading ?? true;
 
-  // Prepend backend URL for images on Port 5000
+ 
   const backendUrl = "http://localhost:5000";
 
   const handleAddToCart = (product) => {
@@ -50,21 +50,21 @@ const Wishlist = () => {
       ) : (
         <div className="wishlist-grid">
           {items.map((item) => {
-            // In MERN, the 'item' is the Wishlist object, 'item.productId' is the Nail Product object
+           
             const product = item.productId;
             
-            // If product didn't populate correctly from MongoDB Atlas
+            
             if (!product || typeof product === 'string') {
               return (
                 <div key={item._id} className="wishlist-card error-card">
                    <p>Updating product details...</p>
-                   {/* Pass the item._id specifically for the removal route */}
+                   
                    <button onClick={() => toggleWishlist({ _id: product })}>Remove</button>
                 </div>
               );
             }
 
-            // ✅ ARRAY IMAGE FIX: Accessing images[0].url from your Atlas data
+            
             const imagePath = product.images && product.images.length > 0 
               ? product.images[0].url 
               : product.image;

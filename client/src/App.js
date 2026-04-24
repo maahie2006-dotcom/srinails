@@ -34,7 +34,7 @@ import SizingGuide from './pages/SizingGuide';
 import Returns from './pages/Returns';
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
-import FAQ from "./pages/FAQ"; // ✅ Fixed the quote mismatch here
+import FAQ from "./pages/FAQ"; 
 
 // Admin Pages
 import AdminDashboard from './pages/admin/Dashboard';
@@ -45,7 +45,7 @@ import Messages from "./pages/admin/Messages";
 import AdminSubscribers from './pages/admin/AdminSubscribers';
 import './index.css';
 
-// ✅ GLOBAL AXIOS CONFIGURATION
+
 axios.defaults.baseURL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 axios.defaults.withCredentials = true;
 

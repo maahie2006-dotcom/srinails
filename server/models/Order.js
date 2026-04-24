@@ -33,7 +33,7 @@ const orderSchema = new mongoose.Schema({
     country: String
   },
   payment: {
-    // UPDATED: Added 'Razorpay' to the allowed methods
+    
     method: { type: String, enum: ['stripe', 'paypal', 'cod', 'Razorpay'], default: 'Razorpay' },
     razorpayOrderId: String,
     razorpayPaymentId: String,
@@ -57,7 +57,7 @@ const orderSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// Auto-generate a unique Order Number for SriNails
+
 orderSchema.pre('save', function (next) {
   if (!this.orderNumber) {
     this.orderNumber = 'SRI-' + Date.now() + '-' + Math.floor(Math.random() * 1000);

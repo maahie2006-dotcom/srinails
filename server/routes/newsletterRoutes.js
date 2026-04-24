@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const router = express.Router();
 
-// 1. Define the Schema
+
 const subscriberSchema = new mongoose.Schema({
   email: {
     type: String,
@@ -21,10 +21,7 @@ const subscriberSchema = new mongoose.Schema({
 // 2. Create the Model
 const Subscriber = mongoose.models.Subscriber || mongoose.model('Subscriber', subscriberSchema);
 
-// --- ROUTES ---
 
-// @route   POST /api/newsletter/subscribe
-// @desc    Public route to join the newsletter (Home Page)
 router.post('/subscribe', async (req, res) => {
   const { email } = req.body;
 
@@ -48,8 +45,7 @@ router.post('/subscribe', async (req, res) => {
   }
 });
 
-// @route   GET /api/newsletter/subscribers
-// @desc    Admin route to see all subscribers for the list
+
 router.get('/subscribers', async (req, res) => {
   try {
     const subscribers = await Subscriber.find().sort({ subscribedAt: -1 });
@@ -59,8 +55,7 @@ router.get('/subscribers', async (req, res) => {
   }
 });
 
-// @route   DELETE /api/newsletter/subscribers/:id
-// @desc    Admin route to remove a subscriber from the list
+
 router.delete('/subscribers/:id', async (req, res) => {
   try {
     const subscriber = await Subscriber.findByIdAndDelete(req.params.id);
@@ -73,21 +68,20 @@ router.delete('/subscribers/:id', async (req, res) => {
   }
 });
 
-// @route   POST /api/newsletter/toggle-subscription
-// @desc    Sync route for User Account page toggle
+
 router.post('/toggle-subscription', async (req, res) => {
   const { email, isSubscribed } = req.body;
 
   try {
     if (isSubscribed) {
-      // Add to list if not already there
+      
       const existing = await Subscriber.findOne({ email });
       if (!existing) {
         const newSub = new Subscriber({ email });
         await newSub.save();
       }
     } else {
-      // Remove from list if they unsubscribed
+      
       await Subscriber.findOneAndDelete({ email });
     }
     res.status(200).json({ success: true });

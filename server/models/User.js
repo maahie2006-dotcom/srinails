@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema({
     default: '' 
   },
   
-  // ✅ NEW: Newsletter Subscription Status
+  
   isSubscribed: {
     type: Boolean,
     default: false
@@ -73,7 +73,7 @@ const userSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Hash password before saving
+
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
@@ -86,7 +86,7 @@ userSchema.pre('save', async function (next) {
   }
 });
 
-// Method to verify password during login
+
 userSchema.methods.comparePassword = async function (enteredPassword) {
   try {
     return await bcrypt.compare(enteredPassword, this.password);

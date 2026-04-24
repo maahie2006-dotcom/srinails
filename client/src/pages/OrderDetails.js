@@ -25,7 +25,7 @@ const OrderDetails = () => {
     <div style={{background: '#fdf9fa', minHeight: '100vh', padding: '60px 20px', fontFamily: 'Poppins, sans-serif'}}>
       <div style={{maxWidth: '1100px', margin: '0 auto'}}>
         
-        {/* HEADER SECTION */}
+        
         <div style={{textAlign: 'center', marginBottom: '50px'}}>
           <div style={{width: '80px', height: '80px', background: '#4a2535', color: '#fff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '40px', margin: '0 auto 20px', boxShadow: '0 10px 20px rgba(74,37,53,0.2)'}}>✓</div>
           <h1 style={{color: '#4a2535', fontSize: '2.8rem', fontWeight: '700', margin: '0'}}>Order Confirmed!</h1>
@@ -34,7 +34,7 @@ const OrderDetails = () => {
 
         <div style={{display: 'grid', gridTemplateColumns: '1fr 380px', gap: '40px'}}>
           
-          {/* LEFT: ITEMS CARD */}
+          
           <div style={{background: '#fff', padding: '35px', borderRadius: '30px', boxShadow: '0 20px 40px rgba(0,0,0,0.03)'}}>
             <h3 style={{color: '#4a2535', fontSize: '1.3rem', marginBottom: '25px', borderBottom: '1px solid #f5f5f5', paddingBottom: '15px'}}>Your Luxury Selection</h3>
             {order.items.map((item, index) => (

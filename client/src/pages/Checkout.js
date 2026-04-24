@@ -9,7 +9,7 @@ import './Checkout.css';
 const STEPS = ['Shipping', 'Payment', 'Review'];
 
 const Checkout = () => {
-  const { 
+  const {   
     cart, 
     subtotal = 0, 
     shipping = 0, 
@@ -17,7 +17,7 @@ const Checkout = () => {
     discountAmount = 0, 
     total = 0, 
     clearCart, 
-    setDiscountData, // We'll use this to update state from the API
+    setDiscountData, 
     appliedCoupon,
     removeCoupon
   } = useCart();
@@ -41,19 +41,19 @@ const Checkout = () => {
 
   const [paymentMethod, setPaymentMethod] = useState('card');
 
-  // ✅ DYNAMIC COUPON VALIDATION
+  
   const handleApply = async () => {
     if (!couponInput) return toast.error("Please enter a code");
     
     try {
       setLoading(true);
-      // Calls your new dynamic backend route
+      
       const { data } = await axios.post('http://localhost:5000/api/coupons/validate', {
         code: couponInput,
-        cartTotal: subtotal // Checks minPurchase on backend
+        cartTotal: subtotal 
       });
 
-      // Update the context with the new discount data
+     
       setDiscountData({
         code: data.code,
         discountValue: data.discountValue,
@@ -74,7 +74,7 @@ const Checkout = () => {
     try {
       const token = localStorage.getItem("ppn_token");
 
-      // 1. Create Order on Backend
+      
       const { data: orderData } = await axios.post('http://localhost:5000/api/payment/orders', {
         amount: total 
       });
@@ -250,7 +250,7 @@ const Checkout = () => {
             
             <div className="summary-divider" />
 
-            {/* ✅ DYNAMIC COUPON SECTION */}
+            
             <div className="premium-coupon-section" style={{ margin: '15px 0' }}>
               {appliedCoupon ? (
                 <div style={{ display: 'flex', justifyContent: 'space-between', background: 'rgba(74, 37, 53, 0.05)', padding: '10px 15px', borderRadius: '8px', border: '1px dashed #4a2535' }}>

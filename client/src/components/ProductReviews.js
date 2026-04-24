@@ -6,7 +6,7 @@ import './ProductReviews.css';
 
 const ProductReviews = ({ productId }) => {
   const { user } = useAuth();
-  const [reviews, setReviews] = useState([]);
+  const [reviews, setReviews] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ rating: 5, title: '', comment: '' });
 
@@ -20,7 +20,7 @@ const ProductReviews = ({ productId }) => {
   };
 
   useEffect(() => {
-    if (productId) fetchReviews();
+    if (productId) fetchReviews(); 
   }, [productId]);
 
   const handleSubmit = async (e) => {
